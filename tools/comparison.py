@@ -3,6 +3,55 @@ import docx       # pip install python-docx
 import re
 import jiwer      # pip install jiwer
 import difflib
+from normalizers import cleaning
+
+
+def segments_comparison(segments,
+    ground_truth_path: str,
+    audio_path: str,
+    diff: bool      = False,
+    print_hype_text: bool     = False,
+    print_ref_text: bool      = False,
+    msg: str = None,
+    lang: str = None,
+    ):
+
+    # 2. hypothesis text
+    hyp_text = get_hypothesis_text(segments).strip()
+    if print_hype_text:
+        print("\nhyp_text:\n", hyp_text)
+
+
+
+    # 3. reference text
+    ref_text = load_reference_text(ground_truth_path).strip()
+    if print_ref_text:
+        print("\nref_text:\n", ref_text)
+
+
+    hyp = cleaning(hyp_text, lang).strip() if isinstance(hyp_text, str) else hyp_text
+    # ref = cleaning(ref_text, lang).strip() if isinstance(ref_text, str) else ref_text
+
+
+
+    # 4. compare & report
+    print("\n" + "*"*70)
+    print(f"Comparing {msg}\n  HYP: {audio_path}\n  REF: {ground_truth_path}")
+    print("*"*70 + "\n")
+    compare_texts(hyp_text, ref_text, diff=diff)
+
+    # 4. compare & report
+    print("\n" + "*"*70)
+    print(f"Comparing After Normalizing{msg}\n  HYP: {audio_path}\n  REF: {ground_truth_path}")
+    print("*"*70 + "\n")
+
+    if print_hype_text:
+        print("\nhyp_text after normalization:\n", hyp)
+
+    if print_ref_text:
+        print("\nref_text:\n", ref_text)
+
+    compare_texts(hyp, ref_text, diff=diff)
 
 
 def get_hypothesis_text(segments):
