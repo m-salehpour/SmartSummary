@@ -207,6 +207,8 @@ marimo/_lsp/
 __marimo__/
 /tools/whisper_checkpoints/
 /tools/whisperx_models/
-/Data
 /.idea
 /Data/
+/TurboParser-master/
+/TurboParser-master
+/hamz_t/
