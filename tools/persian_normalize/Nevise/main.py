@@ -148,7 +148,7 @@ def spell_checking_on_sents(model, vocab, device, normalizer, txt):
         out.append((" ".join(y), z))
     new_out = []
     for i, sent in enumerate(out):
-            new_out.append( (utils.de_space_special_chars(out[i][0]), utils.de_space_special_chars(out[i][1])))
+            new_out.append((utils.de_space_special_chars(out[i][0]), utils.de_space_special_chars(out[i][1])))
     return new_out, splitters
 
 

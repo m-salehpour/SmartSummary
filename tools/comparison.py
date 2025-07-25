@@ -1,137 +1,123 @@
-#!/usr/bin/env python3
-import docx       # pip install python-docx
+from pathlib import Path
 import re
-import jiwer      # pip install jiwer
+import docx
+import jiwer
 import difflib
-from normalizers import cleaning
+import logging
+from typing import List, Dict, Union, Any, Optional
 
+logger = logging.getLogger(__name__)
 
-def segments_comparison(segments,
-    ground_truth_path: str,
-    audio_path: str,
-    diff: bool      = False,
-    print_hype_text: bool     = False,
-    print_ref_text: bool      = False,
-    msg: str = None,
-    lang: str = None,
-    ):
-
-    # 2. hypothesis text
-    hyp_text = get_hypothesis_text(segments).strip()
-    if print_hype_text:
-        print("\nhyp_text:\n", hyp_text)
-
-
-
-    # 3. reference text
-    ref_text = load_reference_text(ground_truth_path).strip()
-    if print_ref_text:
-        print("\nref_text:\n", ref_text)
-
-
-    hyp = cleaning(hyp_text, lang).strip() if isinstance(hyp_text, str) else hyp_text
-    # ref = cleaning(ref_text, lang).strip() if isinstance(ref_text, str) else ref_text
-
-
-
-    # 4. compare & report
-    print("\n" + "*"*70)
-    print(f"Comparing {msg}\n  HYP: {audio_path}\n  REF: {ground_truth_path}")
-    print("*"*70 + "\n")
-    compare_texts(hyp_text, ref_text, diff=diff)
-
-    # 4. compare & report
-    print("\n" + "*"*70)
-    print(f"Comparing After Normalizing{msg}\n  HYP: {audio_path}\n  REF: {ground_truth_path}")
-    print("*"*70 + "\n")
-
-    if print_hype_text:
-        print("\nhyp_text after normalization:\n", hyp)
-
-    if print_ref_text:
-        print("\nref_text:\n", ref_text)
-
-    compare_texts(hyp, ref_text, diff=diff)
-
-
-def get_hypothesis_text(segments):
+def get_hypothesis_text(segments: List[Dict[str, Any]]) -> str:
     """
-    segments: list of dicts with 'text','start','end'
-    returns one long string of all text in order
+    Concatenate ASR segments into a single string.
     """
-    # simply concatenate segment texts with spaces
-    return " ".join(seg["text"].strip() for seg in segments)
+    return " ".join(seg.get("text", "").strip() for seg in segments)
 
-def load_reference_text(docx_path: str) -> str:
+
+def load_reference_text(path: Union[str, Path]) -> str:
     """
-    Reads a .docx, extracts the chunk of text between one of several marker pairs.
-    If no marker is found, raises ValueError and dumps the first 500 characters
-    so you can inspect what's actually in the file.
+    Read a .docx file and extract the reference transcript between known markers.
+    Raises ValueError if markers not found.
     """
-    # Load full text
-    doc = docx.Document(docx_path)
+    path = Path(path)
+    doc = docx.Document(str(path))
     full_text = "\n".join(p.text for p in doc.paragraphs)
-
-    # List of (start_marker, end_marker) regex pairs to try
+    # Define start/end marker patterns
     patterns = [
-        (r"English\s*Transcript\s*:\s*(.*?)\s*(?=Hebrew\s*Translation\s*:)", None),
-        (r"Original\s*Text\s*:\s*(.*?)\s*(?=Translated\s*Text\s*:)", None),
-        (r"Source\s*Text\s*:\s*(.*?)\s*(?=Translation\s*:)", None),
-        (r"English\s*Transcript\s*:\s*(.*)", r"(?=Hebrew\s*Translation\s*:)"),  # alternative lookahead
-        (r"(?:English Transcript|Original Text)\s*:\s*(.*?)\s*(?:Hebrew Translation|Translated Text)\s*:", None),
+        r"English\s*Transcript\s*:\s*(.*?)\s*(?=Hebrew\s*Translation\s*:)",
+        r"Original\s*Text\s*:\s*(.*?)\s*(?=Translated\s*Text\s*:)",
+        r"Source\s*Text\s*:\s*(.*?)\s*(?=Translation\s*:)",
+        r"(?:English Transcript|Original Text)\s*:\s*(.*?)\s*(?:Hebrew Translation|Translated Text)\s*:",
     ]
-
-    for start_pat, end_pat in patterns:
-        if end_pat is None:
-            # single regex with lookahead in the first group
-            combined = start_pat
-        else:
-            combined = start_pat + end_pat
-
-        m = re.search(combined, full_text, flags=re.IGNORECASE | re.DOTALL)
-        if m:
-            # collapse all whitespace to single spaces
-            raw = m.group(1)
+    for pat in patterns:
+        match = re.search(pat, full_text, flags=re.IGNORECASE | re.DOTALL)
+        if match:
+            raw = match.group(1)
             return " ".join(raw.split())
-
-    # nothing matched — raise with a snippet for debugging
+    # No match found, raise with snippet
     snippet = full_text[:500].replace("\n", " ")
     raise ValueError(
-        f"Could not find any of the expected markers in '{docx_path}'.\n"
-        f"Here are the first 500 chars of the document:\n\n{snippet}\n\n"
-        "Please update your markers or add a new regex to handle this format."
+        f"Could not find expected markers in '{path}'. Snippet: {snippet}"
     )
 
 
-def compare_texts(hyp: str, ref: str, diff: bool):
+def compute_wer_metrics(hyp: str, ref: str) -> Dict[str, Any]:
     """
-    Compute WER + insertions/deletions/substitutions,
-    and print a word-level diff.
+    Compute WER and related counts between reference and hypothesis.
+    Returns a dict with 'wer', 'substitutions', 'deletions', 'insertions'.
     """
-    wer = jiwer.wer(ref, hyp)
+    wer_value = jiwer.wer(ref, hyp)
     measures = jiwer.process_characters(ref, hyp)
-    subs = measures.substitutions
-    dels = measures.deletions
-    ins = measures.insertions
+    return {
+        "wer": wer_value,
+        "substitutions": measures.substitutions,
+        "deletions": measures.deletions,
+        "insertions": measures.insertions,
+    }
 
 
-    # word-level diff
+def diff_word_level(ref: str, hyp: str) -> List[str]:
+    """
+    Return a unified diff of reference vs hypothesis word lists.
+    """
+    ref_words = ref.split()
+    hyp_words = hyp.split()
+    return list(difflib.unified_diff(
+        ref_words,
+        hyp_words,
+        fromfile="REFERENCE",
+        tofile="HYPOTHESIS",
+        lineterm=""
+    ))
+
+
+def compare_texts(
+    hyp: str,
+    ref: str,
+    diff: bool = False
+) -> Dict[str, Any]:
+    """
+    Compute and optionally print WER metrics and word-level diff.
+    Returns the metrics dict.
+    """
+    metrics = compute_wer_metrics(hyp, ref)
+    logging.info(f"📊 WER: {metrics['wer']:.2%} | S={metrics['substitutions']} D={metrics['deletions']} I={metrics['insertions']}")
     if diff:
-        ref_words = ref.split()
-        hyp_words = hyp.split()
-        diff = difflib.unified_diff(
-            ref_words,
-            hyp_words,
-            fromfile="REFERENCE",
-            tofile="HYPOTHESIS",
-            lineterm="",
-        )
-        print("🔍 Word-level diff:")
-        for line in diff:
-            print(line)
+        diffs = diff_word_level(ref, hyp)
+        logging.info("🔍 Word-level diff:")
+        for line in diffs:
+            logging.info(line)
+    return metrics
 
-    print(f"\n📊 WER: {wer:.2%}")
-    print(f"   Substitutions: {subs}")
-    print(f"   Deletions:     {dels}")
-    print(f"   Insertions:    {ins}\n")
 
+def segments_comparison(
+    hyp_text: str,
+    ground_truth_path: Union[str, Path],
+    audio_path: Union[str, Path],
+    diff: bool = False,
+    print_hyp: bool = False,
+    print_ref: bool = False,
+    msg: Optional[str] = None,
+    lang: Optional[str] = None,
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Full pipeline: extract hypothesis, load reference, normalize, and compare.
+
+    Returns a dict with 'raw' and 'clean' metrics.
+    """
+    # Extract texts
+    ref_text = load_reference_text(ground_truth_path)
+
+    if print_hyp:
+        logging.info(f"[Raw hyp] {hyp_text}")
+    if print_ref:
+        logging.info(f"[Ref] {ref_text}")
+
+    # Raw comparison
+    logging.info(f"--- Comparing raw {msg} ---")
+    raw_metrics = compare_texts(hyp_text, ref_text, diff)
+
+    clean_metrics = ""
+
+    return {"raw": raw_metrics, "clean": clean_metrics}

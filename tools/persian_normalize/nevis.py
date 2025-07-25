@@ -2,17 +2,17 @@
 # 1 « Nevise » spell-checker glue (chatty)
 # ──────────────────────────────────────────────────────────────────────
 
-from Nevise.utils import get_sentences_splitters
-from Nevise.helpers import (
+from tools.persian_normalize.Nevise.utils import get_sentences_splitters
+from tools.persian_normalize.Nevise.helpers import (
     load_vocab_dict, get_model_nparams,
     batch_iter, labelize,
     bert_tokenize_for_valid_examples,
     untokenize_without_unks, untokenize_without_unks2
 )
-import Nevise.utils as utils
+import tools.persian_normalize.Nevise.utils as utils
 import torch
 from hazm import Normalizer
-from Nevise.models import SubwordBert
+from tools.persian_normalize.Nevise.models import SubwordBert
 from pathlib import Path
 import asyncio, json, re, sys, time
 
