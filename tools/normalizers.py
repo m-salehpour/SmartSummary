@@ -1,11 +1,13 @@
 import logging
+from pathlib import Path
 from typing import Optional
 
+from tools.persian_normalize.context_aware_normalizer import pipeline_clean
 from tools.persian_normalize.nevis import NeviseCorrector
 from tools.persian_normalize.persian_normalizer import persian_normalizer
 from hazm import Normalizer as HazmNormalizer
 import config
-
+from tools.utils import cleaned_filename
 
 logger = logging.getLogger(__name__)
 
@@ -63,3 +65,15 @@ def cleaning(text: str, language: Optional[str] = None) -> Optional[str]:
 
     # fallback: no cleaning for other langs
     return text
+
+
+def _run_llm_clean(input_json: Path, suffix: str) -> Path:
+    """
+    Runs pipeline_clean.main on the given JSON and returns
+    the path to the new JSON (with the given suffix).
+    """
+    out_json = Path(cleaned_filename(str(input_json), suffix=suffix))
+    print(f"\n🔄 Running LLM cleaner ({suffix}) → {out_json}")
+    pipeline_clean.main(input_json, out_json)
+    print(f"✅ LLM-cleaned transcript ({suffix}) saved to {out_json}")
+    return out_json

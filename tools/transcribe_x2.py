@@ -8,9 +8,10 @@ import config      # runs config.py top‐level setup
 from tools.profiler import profile_resources
 from asr import evaluate_transcription
 
+
 # result = evaluate_transcription(audio_path=audio_file, ground_truth_path=ground_truth_file, diff=False, print_hype_text=True , print_ref_text=True, model_size="medium" )
 
-# @profile_resources
+@profile_resources
 def run_experiment():
 
     # audio_file = "../Data/Training/Farsi/Quran/farsi_secondsource.mp3"

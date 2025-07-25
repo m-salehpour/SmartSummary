@@ -121,3 +121,32 @@ def segments_comparison(
     clean_metrics = ""
 
     return {"raw": raw_metrics, "clean": clean_metrics}
+
+
+def compare_segments(
+    segments,
+    ground_truth_path: Path,
+    audio_path: Path,
+    diff: bool,
+    print_hyp: bool,
+    print_ref: bool,
+    msg: str,
+    lang: str,
+):
+    print(f"\n--- Comparing {msg} ({lang}) ---\n")
+    segments_comparison(
+        segments,
+        str(ground_truth_path),
+        str(audio_path),
+        diff=diff,
+        print_hyp=print_hyp,
+        print_ref=print_ref,
+        msg=msg,
+        lang=lang,
+    )
+
+
+def _compare_strs(hyp: str, ref: str, **cmp_kwargs):
+    """Helper to do a single string-based comparison and print WER/diff."""
+    metrics = compare_texts(hyp, ref, **cmp_kwargs)
+    return metrics

@@ -2,13 +2,19 @@ import json
 from pathlib import Path
 
 import whisperx
-from tools.comparison import segments_comparison, get_hypothesis_text
-import config
-from persian_normalize.context_aware_normalizer import pipeline_clean
+
 from normalizers import cleaning as no_llm_clean
+from tools.normalizers import _run_llm_clean
 from tools.utils import (
     save_transcription_result,
     cleaned_filename,
+)
+
+from tools.comparison import (
+    segments_comparison,
+    get_hypothesis_text,
+    load_reference_text,
+    _compare_strs,
 )
 
 
@@ -27,29 +33,6 @@ def transcribe_audio(
     return model.transcribe(audio, batch_size=batch_size)
 
 
-def compare_segments(
-    segments,
-    ground_truth_path: Path,
-    audio_path: Path,
-    diff: bool,
-    print_hyp: bool,
-    print_ref: bool,
-    msg: str,
-    lang: str,
-):
-    print(f"\n--- Comparing {msg} ({lang}) ---\n")
-    segments_comparison(
-        segments,
-        str(ground_truth_path),
-        str(audio_path),
-        diff=diff,
-        print_hyp=print_hyp,
-        print_ref=print_ref,
-        msg=msg,
-        lang=lang,
-    )
-
-
 def evaluate_transcription(
     audio_path: str,
     ground_truth_path: str,
@@ -64,52 +47,67 @@ def evaluate_transcription(
     """
     1) Transcribe audio → raw segments
     2) Save raw JSON
-    3) Compare raw, no-LLM-clean, and LLM-clean outputs vs. reference
+    3) Compare raw, no-LLM-clean, LLM-clean, and LLM(no-LLM) outputs vs. reference
     """
     audio_p = Path(audio_path)
     ref_p   = Path(ground_truth_path)
 
     # 1) Transcribe
-    result = transcribe_audio(audio_p, model_size, device, compute_type, batch_size)
-    lang   = result.get("language", "unknown")
-    segments = result["segments"]
+    model = whisperx.load_model(model_size, device, compute_type=compute_type)
+    audio = whisperx.load_audio(str(audio_p))
+    result = model.transcribe(audio, batch_size=batch_size)
+
+    lang     = result.get("language", "unknown")
+    raw_segs = result["segments"]
 
     # 2) Save raw transcript JSON
     raw_json = save_transcription_result(result, audio_path)
     print(f"✅ Raw transcript saved to {raw_json}")
 
-    segments = get_hypothesis_text(segments)
+    # prepare reference text once
+    ref_text = load_reference_text(str(ref_p)).strip()
+    if print_ref:
+        print("\n[REF TEXT]\n", ref_text)
 
-    # 3) Compare raw segments
-    compare_segments(segments, ref_p, audio_p, diff, print_hyp, print_ref, "raw transcription", lang)
+    # 3) RAW comparison
+    hyp_raw = get_hypothesis_text(raw_segs).strip()
+    if print_hyp:
+        print("\n[HYP RAW]\n", hyp_raw)
+    print("\n=== RAW TRANSCRIPTION ===")
+    _compare_strs(hyp_raw, ref_text, diff=diff)
 
-    # 4) Compare no-LLM-clean segments
-    cleaned_no_llm = no_llm_clean(segments, lang)
-    compare_segments(cleaned_no_llm, ref_p, audio_p, diff, print_hyp, print_ref, "no-LLM cleaned", lang)
+    # 4) NO-LLM clean comparison
+    hyp_no_llm = no_llm_clean(hyp_raw, lang).strip()
+    if print_hyp:
+        print("\n[HYP NO-LLM CLEAN]\n", hyp_no_llm)
+    print("\n=== NO-LLM CLEANED ===")
+    _compare_strs(hyp_no_llm, ref_text, diff=diff)
 
-    # 5) Run LLM-based cleaner and compare
-    llm_json = cleaned_filename(raw_json, suffix="_llm_cleaned")
-    print(f"\n🔄 Running LLM cleaner → {llm_json}")
-    pipeline_clean.main(Path(raw_json), Path(llm_json))
-    print(f"✅ LLM-cleaned transcript saved to {llm_json}")
+    # 5A) LLM clean of RAW → compare
+    llm_raw_json = _run_llm_clean(Path(raw_json), suffix="_llm_from_raw")
+    llm_raw_data = json.loads(llm_raw_json.read_text(encoding="utf-8"))
+    hyp_llm_raw  = get_hypothesis_text(llm_raw_data["segments"]).strip()
+    if print_hyp:
+        print("\n[HYP LLM(from raw)]\n", hyp_llm_raw)
+    print("\n=== LLM-CLEANED FROM RAW ===")
+    _compare_strs(hyp_llm_raw, ref_text, diff=diff)
 
-    with open(llm_json, encoding="utf-8") as f:
-        llm_result = json.load(f)
-
-    segments = get_hypothesis_text(llm_result["segments"])
-    compare_segments(
-        segments,
-        ref_p,
-        audio_p,
-        diff,
-        print_hyp,
-        print_ref,
-        "LLM-normalized transcription",
-        lang,
-    )
+    # 5B) LLM clean of NO-LLM → compare
+    # reuse the no-LLM cleaned transcript JSON (or generate a JSON from hyp_no_llm first)
+    # for simplicity assume we can write hyp_no_llm segments back to a JSON:
+    no_llm_json = cleaned_filename(raw_json, suffix="_no_llm_cleaned")
+    # write out a minimal JSON structure:
+    with open(no_llm_json, "w", encoding="utf-8") as f:
+        json.dump({"segments": [{"text": hyp_no_llm}]}, f, indent=2)
+    llm_no_llm_json = _run_llm_clean(Path(no_llm_json), suffix="_llm_from_no_llm")
+    llm_no_llm_data = json.loads(llm_no_llm_json.read_text(encoding="utf-8"))
+    hyp_llm_no_llm  = get_hypothesis_text(llm_no_llm_data["segments"]).strip()
+    if print_hyp:
+        print("\n[HYP LLM(from no-LLM)]\n", hyp_llm_no_llm)
+    print("\n=== LLM-CLEANED FROM NO-LLM ===")
+    _compare_strs(hyp_llm_no_llm, ref_text, diff=diff)
 
     return result
-
 
 def align_whisper_output(
     result,
@@ -128,3 +126,4 @@ def align_whisper_output(
     result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
 
     segments_comparison(result["segments"], ground_truth_path, audio_path, diff=diff, print_hyp=print_hype_text, print_ref=print_ref_text, msg="aligned", lang=result["language"])
+
