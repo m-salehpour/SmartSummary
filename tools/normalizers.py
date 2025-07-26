@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 _nevise_corrector = NeviseCorrector(config.NEVISE_VOCAB, config.NEVISE_CKPT)
 _hazm_normalizer  = HazmNormalizer()
 
+
 # ─── Hebrew Cleaning Steps ─────────────────────────────────────────────────────────────
 THOUSANDS = re.compile(r'(?<=\d),(?=\d)')  # 3,000 -> 3000
 
@@ -92,8 +93,8 @@ def cleaning(text: str, language: Optional[str] = None) -> Optional[str]:
         step3 = hazm_normalize(step2) #maybe redundant
         return step3
 
-    elif language == "he": # Hebrew
-        return normalize_hebrew(text, split_maqaf=True)
+    elif language == "he":
+        return normalize_hebrew(text, split_maqaf=True)  # Hebrew
 
     # fallback: no cleaning for other langs
     return text
