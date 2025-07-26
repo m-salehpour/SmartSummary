@@ -3,6 +3,7 @@ from pathlib import Path
 
 import whisperx
 
+
 from normalizers import cleaning as no_llm_clean
 from tools.normalizers import _run_llm_clean
 from tools.utils import (
@@ -17,6 +18,18 @@ from tools.comparison import (
     _compare_strs,
 )
 
+# ---- Defaults for ASR VAD ----
+from typing import Optional, Dict, Union
+DEFAULT_ASR_OPTIONS: Dict = {
+    "no_speech_threshold": 0.30,          # default 0.6 – be less eager to drop
+    "condition_on_previous_text": False,  # fine either way for the opener
+}
+DEFAULT_VAD_METHOD: str = "silero"        # often more permissive than pyannote
+DEFAULT_VAD_OPTIONS: Dict = {
+    "chunk_size": 60,   # larger chunks → fewer tiny early cuts
+    "vad_onset": 0.30,  # default ~0.50 – lower so quiet speech is kept
+    "vad_offset": 0.20, # default ~0.363 – release later to avoid early cut
+}
 
 def transcribe_audio(
     audio_path: Path,
@@ -44,6 +57,10 @@ def evaluate_transcription(
     print_hyp: bool = False,
     print_ref: bool = False,
     llm_clean: bool = False,
+    asr_options: Optional[Dict] = None,
+    vad_method: Optional[str] = None,
+    vad_options: Optional[Dict] = None,
+    print_progress: bool = True
 ):
     """
     1) Transcribe audio → raw segments
@@ -53,10 +70,23 @@ def evaluate_transcription(
     audio_p = Path(audio_path)
     ref_p   = Path(ground_truth_path)
 
+    # Merge shallow copies (caller values override defaults)
+    merged_asr = {**DEFAULT_ASR_OPTIONS, **(asr_options or {})}
+    used_vad_method = vad_method or DEFAULT_VAD_METHOD
+    merged_vad = {**DEFAULT_VAD_OPTIONS, **(vad_options or {})}
+
     # 1) Transcribe
-    model = whisperx.load_model(model_size, device, compute_type=compute_type)
+    model = whisperx.load_model(
+        model_size,
+        device,
+        compute_type=compute_type,
+        asr_options=merged_asr,
+        vad_method=used_vad_method,
+        vad_options=merged_vad,
+    )
+
     audio = whisperx.load_audio(str(audio_p))
-    result = model.transcribe(audio, batch_size=batch_size)
+    result = model.transcribe(audio, batch_size=batch_size, print_progress=print_progress)
 
     lang     = result.get("language", "unknown")
     raw_segs = result["segments"]

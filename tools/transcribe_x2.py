@@ -20,8 +20,11 @@ def run_experiment():
     # audio_file = "../Data/Training/Farsi/Quran/farsi_thirdsource.mp3"
     # ground_truth_file = "../Data/Training/Farsi/Quran/farsi_thirdsource_transcript-farsi_translation-hebrew.docx"
 
-    audio_file = "../Data/Training/Hebrew/hebrew_firstsource.mp4"
-    ground_truth_file = "../Data/Training/Hebrew/hebrew_firstsource_transcript-hebrew_translation-english.docx"
+    # audio_file = "../Data/Training/Hebrew/hebrew_firstsource.mp4"
+    # ground_truth_file = "../Data/Training/Hebrew/hebrew_firstsource_transcript-hebrew_translation-english.docx"
+
+    audio_file = "../Data/Training/English/Churchill/english_firstsourcecommons_13_churchill_64kb.mp3"
+    ground_truth_file = "../Data/Training/English/Churchill/english_firstsourcecommons_13_churchill_transcript-english_translation_hebrew.docx"
 
     return evaluate_transcription(
         audio_path=audio_file,
