@@ -9,12 +9,40 @@ from hazm import Normalizer as HazmNormalizer
 import config
 from tools.utils import cleaned_filename
 
+import re
+from hebrew import Hebrew
+
+
 logger = logging.getLogger(__name__)
 
 
 # Load once at import time
 _nevise_corrector = NeviseCorrector(config.NEVISE_VOCAB, config.NEVISE_CKPT)
 _hazm_normalizer  = HazmNormalizer()
+
+# ─── Hebrew Cleaning Steps ─────────────────────────────────────────────────────────────
+THOUSANDS = re.compile(r'(?<=\d),(?=\d)')  # 3,000 -> 3000
+
+def normalize_hebrew(text: str,
+                     *,
+                     remove_taamim=True,
+                     remove_niqqud=True,
+                     remove_punct=True,
+                     split_maqaf=False) -> str:
+    h = Hebrew(text).normalize()                 # fix special/ligature chars
+    if remove_taamim:
+        h = h.no_taamim()
+    if remove_niqqud and not remove_punct:
+        h = h.no_niqqud()                        # keep punctuation, drop vowels
+    if remove_punct:
+        # removes niqqud & punctuation (and optionally maqaf)
+        h = h.text_only(remove_maqaf=split_maqaf)
+
+    s = h.string
+    s = THOUSANDS.sub('', s)                     # “3,000” → “3000”
+    s = s.replace('־', '-')                      # unify maqaf/hyphen if desired
+    return re.sub(r'\s+', ' ', s).strip()
+
 
 # ─── Cleaning Steps ─────────────────────────────────────────────────────────────
 
@@ -57,11 +85,15 @@ def cleaning(text: str, language: Optional[str] = None) -> Optional[str]:
     if not isinstance(text, str):
         return None
 
-    if language == "fa":
+    if language == "fa": # Persian
+
         step1 = nevis_spell_check(text)
         step2 = persian_base_normalize(step1)
         step3 = hazm_normalize(step2) #maybe redundant
         return step3
+
+    elif language == "he": # Hebrew
+        return normalize_hebrew(text, split_maqaf=True)
 
     # fallback: no cleaning for other langs
     return text

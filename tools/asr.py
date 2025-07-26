@@ -43,6 +43,7 @@ def evaluate_transcription(
     diff: bool = False,
     print_hyp: bool = False,
     print_ref: bool = False,
+    llm_clean: bool = False,
 ):
     """
     1) Transcribe audio → raw segments
@@ -83,29 +84,30 @@ def evaluate_transcription(
     print("\n=== NO-LLM CLEANED ===")
     _compare_strs(hyp_no_llm, ref_text, diff=diff)
 
-    # 5A) LLM clean of RAW → compare
-    llm_raw_json = _run_llm_clean(Path(raw_json), suffix="_llm_from_raw")
-    llm_raw_data = json.loads(llm_raw_json.read_text(encoding="utf-8"))
-    hyp_llm_raw  = get_hypothesis_text(llm_raw_data["segments"]).strip()
-    if print_hyp:
-        print("\n[HYP LLM(from raw)]\n", hyp_llm_raw)
-    print("\n=== LLM-CLEANED FROM RAW ===")
-    _compare_strs(hyp_llm_raw, ref_text, diff=diff)
+    if llm_clean:
+        # 5A) LLM clean of RAW → compare
+        llm_raw_json = _run_llm_clean(Path(raw_json), suffix="_llm_from_raw")
+        llm_raw_data = json.loads(llm_raw_json.read_text(encoding="utf-8"))
+        hyp_llm_raw  = get_hypothesis_text(llm_raw_data["segments"]).strip()
+        if print_hyp:
+            print("\n[HYP LLM(from raw)]\n", hyp_llm_raw)
+        print("\n=== LLM-CLEANED FROM RAW ===")
+        _compare_strs(hyp_llm_raw, ref_text, diff=diff)
 
-    # 5B) LLM clean of NO-LLM → compare
-    # reuse the no-LLM cleaned transcript JSON (or generate a JSON from hyp_no_llm first)
-    # for simplicity assume we can write hyp_no_llm segments back to a JSON:
-    no_llm_json = cleaned_filename(raw_json, suffix="_no_llm_cleaned")
-    # write out a minimal JSON structure:
-    with open(no_llm_json, "w", encoding="utf-8") as f:
-        json.dump({"segments": [{"text": hyp_no_llm}]}, f, indent=2)
-    llm_no_llm_json = _run_llm_clean(Path(no_llm_json), suffix="_llm_from_no_llm")
-    llm_no_llm_data = json.loads(llm_no_llm_json.read_text(encoding="utf-8"))
-    hyp_llm_no_llm  = get_hypothesis_text(llm_no_llm_data["segments"]).strip()
-    if print_hyp:
-        print("\n[HYP LLM(from no-LLM)]\n", hyp_llm_no_llm)
-    print("\n=== LLM-CLEANED FROM NO-LLM ===")
-    _compare_strs(hyp_llm_no_llm, ref_text, diff=diff)
+        # 5B) LLM clean of NO-LLM → compare
+        # reuse the no-LLM cleaned transcript JSON (or generate a JSON from hyp_no_llm first)
+        # for simplicity assume we can write hyp_no_llm segments back to a JSON:
+        no_llm_json = cleaned_filename(raw_json, suffix="_no_llm_cleaned")
+        # write out a minimal JSON structure:
+        with open(no_llm_json, "w", encoding="utf-8") as f:
+            json.dump({"segments": [{"text": hyp_no_llm}]}, f, indent=2)
+        llm_no_llm_json = _run_llm_clean(Path(no_llm_json), suffix="_llm_from_no_llm")
+        llm_no_llm_data = json.loads(llm_no_llm_json.read_text(encoding="utf-8"))
+        hyp_llm_no_llm  = get_hypothesis_text(llm_no_llm_data["segments"]).strip()
+        if print_hyp:
+            print("\n[HYP LLM(from no-LLM)]\n", hyp_llm_no_llm)
+        print("\n=== LLM-CLEANED FROM NO-LLM ===")
+        _compare_strs(hyp_llm_no_llm, ref_text, diff=diff)
 
     return result
 
