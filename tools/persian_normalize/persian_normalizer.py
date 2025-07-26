@@ -3,7 +3,7 @@ from parsivar import Normalizer
 import num2fawords
 import re
 import string
-from tools.dictionary import dictionary_mapping, fixator_dictionary
+from tools.persian_normalize.dictionary import dictionary_mapping, fixator_dictionary
 
 
 _normalizer = Normalizer(half_space_char="\u200c", statistical_space_correction=True)

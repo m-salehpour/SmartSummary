@@ -8,10 +8,9 @@ A single-file pipeline that
 
 from __future__ import annotations
 
-import asyncio, json, re, sys, time
+import asyncio, sys, time
 from datetime import timedelta
 from pathlib import Path
-from typing import Dict, List
 
 import torch
 from hazm import Normalizer
@@ -27,7 +26,7 @@ from helpers import (
     load_vocab_dict, get_model_nparams,
     batch_iter, labelize,
     bert_tokenize_for_valid_examples,
-    untokenize_without_unks, untokenize_without_unks2
+    untokenize_without_unks
 )
 import utils
 from models import SubwordBert
