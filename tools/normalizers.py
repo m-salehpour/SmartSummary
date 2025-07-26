@@ -93,7 +93,8 @@ def cleaning(text: str, language: Optional[str] = None) -> Optional[str]:
         step3 = hazm_normalize(step2) #maybe redundant
         return step3
 
-    elif language == "he": return normalize_hebrew(text, split_maqaf=True) # Hebrew
+    elif language == "he":
+        return normalize_hebrew(text, split_maqaf=True)  # Hebrew
 
     # fallback: no cleaning for other langs
     return text
