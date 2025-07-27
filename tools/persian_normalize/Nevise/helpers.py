@@ -6,6 +6,7 @@ import numpy as np
 import transformers
 import torch
 from torch.nn.utils.rnn import pad_sequence
+from init_env import BERT_FA_DIR
 
 def progressBar(value, endvalue, names, values, bar_length=30):
     assert(len(names)==len(values));
@@ -164,7 +165,11 @@ def load_vocab_dict(path_: str):
 
 
 
-BERT_TOKENIZER = transformers.BertTokenizer.from_pretrained("HooshvareLab/bert-fa-base-uncased", do_lower_case=False)
+BERT_TOKENIZER = transformers.BertTokenizer.from_pretrained(
+    BERT_FA_DIR,
+    do_lower_case=False,
+    local_files_only=True,
+)
 BERT_TOKENIZER.do_basic_tokenize = False
 BERT_TOKENIZER.tokenize_chinese_chars = False
 BERT_MAX_SEQ_LEN = 512

@@ -1,8 +1,9 @@
 import json
+import logging
 from pathlib import Path
 
 import whisperx
-
+from init_env import FW_MEDIUM_DIR, HF_ROOT
 
 from normalizers import cleaning as no_llm_clean
 from tools.normalizers import _run_llm_clean
@@ -17,6 +18,9 @@ from tools.comparison import (
     load_reference_text,
     _compare_strs,
 )
+
+logger = logging.getLogger(__name__)
+
 
 # ---- Defaults for ASR VAD ----
 from typing import Optional, Dict, Union
@@ -75,6 +79,8 @@ def evaluate_transcription(
     used_vad_method = vad_method or DEFAULT_VAD_METHOD
     merged_vad = {**DEFAULT_VAD_OPTIONS, **(vad_options or {})}
 
+    logger.info(f"[evaluate_transcription] loading model from...: {FW_MEDIUM_DIR}")
+
     # 1) Transcribe
     model = whisperx.load_model(
         model_size,
@@ -83,6 +89,8 @@ def evaluate_transcription(
         asr_options=merged_asr,
         vad_method=used_vad_method,
         vad_options=merged_vad,
+        download_root=str(HF_ROOT),   # <-- use local HF cache
+        local_files_only=True,        # <-- do not hit the network
     )
 
     audio = whisperx.load_audio(str(audio_p))

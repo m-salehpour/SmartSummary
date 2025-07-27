@@ -3,6 +3,7 @@
 # ─── 1) Environment & config ──────────────────────────────────────────────────
 import init_env    # runs init_env.py top‐level setup
 import config      # runs config.py top‐level setup
+from init_env import FW_MEDIUM_DIR
 
 # ─── 2) Imports of your tools ─────────────────────────────────────────────────
 from tools.profiler import profile_resources
@@ -32,7 +33,7 @@ def run_experiment():
         diff=False,
         print_hyp=True,
         print_ref=True,
-        model_size="medium"
+        model_size=FW_MEDIUM_DIR.resolve().as_posix()
     )
 
 if __name__ == "__main__":
