@@ -7,7 +7,6 @@ import sys, subprocess, logging
 from pathlib import Path
 from download_utils import _download_with_gdown
 
-import logging
 
 # ─── Configure root logger for INFO+ to stdout ────────────────────────────────
 logging.basicConfig(
