@@ -215,3 +215,5 @@ __marimo__/
 /tools/persian_normalize/Nevise/model/
 /models/
 /tools/persian_normalize/Nevise/model_old/
+/tools/asr_outputs/
+/tools/.cache_summary/
