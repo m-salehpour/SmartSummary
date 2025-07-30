@@ -1,0 +1,145 @@
+{
+  "segments": [
+    {
+      "text": " On. All right, team, let's commence this briefing. Our objective today is to finalize the strategy for Operation Blue Nebula. We have 10 minutes. Let's do updates first. Colonel Vortetz, the floor is yours. Thank you, General. Recon drones have scanned the north quadrant of Oridia. Enemy fortifications are present, with a heavy concentration of anti-aircraft turrets protecting the command center. It'll be a tough shell to crack.",
+      "start": 0.034,
+      "end": 29.406,
+      "_idx": 1,
+      "fa_clean": "On. همه چیز آماده است، تیم. بیایید این جلسه را آغاز کنیم. هدف امروز، نهایی‌سازی استراتژی برای عملیات نیلی‌نخیل است. 10 دقیقه فرصت داریم. ابتدا به‌روزرسانی‌ها را بررسی می‌کنیم. سرهنگ ورتِتز، این شما. سپاسگزاریم، ژنرال. پهپادهای شناسایی، شمالِ اوریدیا را بررسی کرده‌اند. استحکامات دشمن در آنجا وجود دارد و تعداد زیادی برج ضد هوایی برای محافظت از مرکز فرماندهی به کار رفته است. شکستن این دفاع، کار آسانی نخواهد بود."
+    },
+    {
+      "text": " That matches our satellite intel. I propose we deploy ground forces at the eastern ridge for a surprise offensive. It's less fortifying and could give us the element of surprise. So yeah, a surprise attack is viable, but we can't disregard the aerial assault. My squadrons can provide air support, neutralizing the turrets before our ground troops move in. I suggest we use the Seraphun stealth units. They can disable the turret silently before the main assault.",
+      "start": 30.37,
+      "end": 58.814,
+      "_idx": 2,
+      "fa_clean": "آن اطلاعات ماهواره‌ای با ما مطابقت دارد. من پیشنهاد می‌کنم نیروهای زمینی را در سراشیه شرقی برای یک حمله غافلگیرکننده مستقر کنیم. این کار، تقویت دفاعی کمتری دارد و می‌تواند عنصر غافلگیری را به ما بدهد. بنابراین، یک حمله غافلگیرکننده امکان‌پذیر است، اما نمی‌توانیم حمله‌ی هوایی را نادیده بگیریم. تیم‌هایم می‌توانند پشتیبانی هوایی ارائه دهند و قبل از ورود نیروهای زمینی، برجک‌ها را خلع سلاح کنند. من پیشنهاد می‌کنم از واحدهای مخفی‌ساز سریفون استفاده کنیم. آن‌ها می‌توانند برجک‌ها را به صورت بی‌صدا خلع سلاح کنند."
+    },
+    {
+      "text": " minimizing our exposure. I concur with Onyx. Additionally, we can deploy electronic warfare teams to disrupt their communications, causing confusion in their ranks. I agree, but stealth is key. Major Skye, coordinate with Captain Stryker on integrating the stealth units with the aerial plan. Colonel Vortex, how soon can we mobilize? If we fast track, perhaps.",
+      "start": 59.266,
+      "end": 86.526,
+      "_idx": 3,
+      "fa_clean": "به حداقل رساندنِ تعرضِ ما. با او نیکور موافقم. همچنین، می‌توانیم تیم‌های جنگ الکترونیک را برای مختل کردن ارتباطاتشان به کار بگیریم و باعث سردرگمی در رتبه‌هاشان شویم. موافقم، اما مخفی‌کاری کلید است. سرلشکر اسکای، با کاپیتان استریکر در مورد ادغام واحدهای مخفی در طرح هوایی هماهنگ کنید. فرمانده ورتکس، تا چه مدت می‌توانیم بسیج شویم؟ اگر بتوانیم سریع‌تر پیش برویم، شاید."
+    },
+    {
+      "text": " We can probably be ready within about 48 hours. However, we'll need to ensure our cyber teams are ready to counter any electronic interference during the operation. Agreed. I'll have my tech specialists work with the cyber team to establish secure comms and jam enemy signals. My pilots are ready on standby, so no issue there. We'll need detailed maps and enemy positions for a precise strike. Lieutenant Commander Otix, can your team provide that?",
+      "start": 86.882,
+      "end": 116.51,
+      "_idx": 4,
+      "fa_clean": "ما می‌توانیم ظرف حدود ۴۸ ساعت آماده باشیم. با این حال، باید اطمینان حاصل کنیم تیم‌های سایبری ما برای مقابله با هرگونه تداخل الکترونیکی در طول عملیات آماده باشند. توافق شد. من متخصصان فنی خود را برای همکاری با تیم سایبری و ایجاد ارتباطات امن و قطع سیگنال‌های دشمن دستور می‌دهم. خلبانان من نیز آماده به‌کار هستند، بنابراین مشکلی نیست. ما به نقشه‌های دقیق و موقعیت‌های دشمن برای ضربه دقیق نیاز داریم. فرمانده‌ی لشکر اوتیکس، آیا تیم شما می‌تواند این موارد را ارائه دهد؟"
+    },
+    {
+      "text": " I mean, absolutely. The stealth units can relay real-time data to your fleet, Captain. We'll also sabotage any long-range comms the enemy has to isolate their command center. I'll have my electronic warfare teams coordinate with Onyx's units. If we time it right, we can cause a total blackout for their forces during the assault. Excellent. I want full integration between units. This operation hinges on coordination. Colonel Vortex,",
+      "start": 116.898,
+      "end": 146.718,
+      "_idx": 5,
+      "fa_clean": "منظورم این است: واحدها می‌توانند داده‌های به‌روز را به ناوگان شما منتقل کنند، فرمانده. همچنین، ارتباطات دوربرد دشمن را خراب می‌کنیم تا مرکز فرماندهی آن‌ها را جدا کنیم. تیم‌های جنگ الکترونیک خود را با واحدهای اوکس هماهنگ می‌کنم. اگر درست زمان‌بندی کنیم، می‌توانیم یک قطع برق کامل برای نیروهای آن‌ها در طول حمله ایجاد کنیم. عالی. می‌خواهم یک ادغام کامل بین واحدها داشته باشیم. این عملیات به هماهنگی بستگی دارد، Colonel Vortex،"
+    },
+    {
+      "text": " oversee this joint operation, make sure everyone has what they need to be successful. Yes, General. Right away, sir. I'll set up a joint task force and immediately to ensure all teams are briefly equipped. Time is of the essence, guys. Remember, the element of surprise is paramount. Any leaks? We might as well be walking into a slaughterhouse, guys. Security protocols, they must be airtight in this operation.",
+      "start": 147.362,
+      "end": 177.278,
+      "_idx": 6,
+      "fa_clean": "بررسی این عملیات مشترک، اطمینان حاصل شود همه آنچه برای موفقیت نیاز دارند را دارند. بله، ژنرال. بلافاصله. من یک تیم عملیاتی مشترک راه‌اندازی خواهم کرد و به سرعت تمام تیم‌ها را مجهز خواهم کرد. زمان جوید، بچه‌ها. به یاد داشته باشید، عنصر غافلگیری بسیار مهم است. آیا نشت وجود دارد؟ گویی داریم وارد یک کشتارگاه می‌شویم، بچه‌ها. پروتکل‌های امنیتی باید کاملاً بی‌نقص باشند در این عملیات."
+    },
+    {
+      "text": " So will there be any civilian considerations, sir? Eastern Ridge is pretty close to those mining colonies. Evacuation plans are already in place. We can't risk collateral damage. Captain Stryker, coordinate with local enforcement to ensure that we have a smooth operation. Hell yeah, General. I'll liaise with the planetary defense corps and make sure the civilians are moved to safety. Before we break, I want to stress logistics.",
+      "start": 179.138,
+      "end": 207.55,
+      "_idx": 7,
+      "fa_clean": "با در نظر گرفتن ملاحظات مدنی، آیا این امکان وجود دارد، فرمانده؟ ارتفاع شرقی به شدت نزدیک به آن معادن است. طرح‌های تخلیه در حال اجرا هستند. نمی‌توانیم از آسیب‌های جانبی جلوگیری کنیم. کاپیتان استریک، با اجرای نیروهای انتظامی محلی هماهنگ کنید تا عملیات ما به آسانی پیش رود. بله، عالی است، ژنرال. من با نیروهای دفاعی سیاره تماس خواهم گرفت و اطمینان حاصل می‌کنم که شهروندان به سلامت منتقل شوند. قبل از پایان، می‌خواهم بر مسائل لجستیکی تاکید کنم."
+    },
+    {
+      "text": " We need to ensure our supply lines are secure and operational prior to the offensive. I'll audit our current munitions stockpile. Can't afford to run low mid-fight. Agreed. And my engineers will need to inspect the fighter jets to ensure they're battle ready. I'll coordinate with the engineers. Stealth tech requires special attention.",
+      "start": 208.29,
+      "end": 231.646,
+      "_idx": 8,
+      "fa_clean": "باید اطمینان حاصل کنیم که خطوط تأمین ما امن و عملیاتی هستند قبل از عملیات. من موجودی فعلی مهمات را بررسی خواهم کرد. نمی‌توانیم در طول نبرد کمبود داشته باشیم. توافق شد. و مهندسان من باید جنگنده‌ها را برای آمادگی جنگ بررسی کنند. من با مهندسان هماهنگ خواهم کرد. فناوری‌های پنهان‌کاری نیازمند توجه ویژه‌ای هستند."
+    },
+    {
+      "text": " I'll have the electronic warfare teams double check our jamming equipment. We can't afford any malfunction during the operation. Very well then. Logistics and readiness are crucial. Now let's discuss contingency plans. Skye, what's our fallback in case we encounter heavier resistance than what we expect? Glad you asked, General. We have the Titan mechs on standby. They can be deployed to reinforce our troops and push through enemy lines. Our mechs are powerful.",
+      "start": 233.058,
+      "end": 261.374,
+      "_idx": 9,
+      "fa_clean": "تیم‌های جنگ الکترونیک باید تجهیزات تداخل‌زای ما را به دقت بررسی کنند. نمی‌توانیم در طول عملیات دچار نقص باشیم. بسیار خوب پس. لجستیک و آمادگی حیاتی هستند. اکنون اجازه دهید در مورد طرح‌های پیشگیرانه بحث کنیم. اسکای، در صورت مواجهه با مقاومت شدیدتر از آنچه انتظار داریم، فرار ما چیست؟ خوشبختانه پرسیدید، ژنرال. مِک‌های تایتان در حالت آماده‌به‌موقع قرار دارند. آن‌ها می‌توانند برای تقویت نیروها و نفوذ در خطوط دشمن به کار گرفته شوند. مِک‌های ما قدرتمند هستند."
+    },
+    {
+      "text": " but they're also a beacon for enemy fire. We'll need to protect them adequately. Don't worry, Vortex. My squadron could provide a defensive perimeter for the Titans. I'll keep the enemy's heavy weapons busy. And my stealth units can take out any threats that slip through. Boom. Consider it done. In the event of electronic warfare, my teams will ensure that the enemy's targeting systems are compromised, making it harder for them to focus fire on the Titans. Excellent.",
+      "start": 261.602,
+      "end": 291.262,
+      "_idx": 10,
+      "fa_clean": "آن‌ها همچنین یک چراغ راهنما برای آتش دشمن هستند. ما باید به طور مناسب از آن‌ها محافظت کنیم. نگران نباش، گروه پروازی ما می‌تواند یک محوطه دفاعی برای تیتان‌ها فراهم کند. من آتش سنگین دشمن را مشغول خواهم کرد. و واحدهای پنهان‌کاری ما می‌توانند هر تهدیدی که از آن‌ها عبور کند را از بین ببرند."
+    },
+    {
+      "text": " And what about enemy prisoners? How are we going to handle them? Vortex? Yes, I've been thinking about that. We prepared secure transport vehicles to take the enemy prisoners to the holding facility Delta. Interrogation teams are on standby. We should also be aware of any intel the other prisoners might provide. Could be critical for subsequent missions. Nothing like some waterboarding. Speaking of intel,",
+      "start": 291.778,
+      "end": 318.622,
+      "_idx": 11,
+      "fa_clean": "Handlingِ دشمنانِ بازداشت‌شده، به ویژهٔ اطلاعاتی‌شان، باید در اولویتِ قرار گیرد؛ وسایلِ حمل‌ونقلِ امن برای انتقالِ آن‌ها به محلِ نگهداریِ دلتا آماده‌سازی شده و تیم‌های بازجویی در دسترس هستند."
+    },
+    {
+      "text": " We should have a debriefing team ready to analyze data immediately after the operation. And my team can prepare the Mobile Command Center for on-site debriefings and analysis. I'll ensure that any captured enemy comms are immediately decoded for actionable intelligence. Good. Efficiency and intel gathering could turn the tides of this war, guys. With your permission, General, I'll start drafting the operation orders and distribute them to each unit by 0600 hours. Permission granted.",
+      "start": 319.17,
+      "end": 348.734,
+      "_idx": 12,
+      "fa_clean": "تیم بازخوانی آماده‌ باشد تا بلافاصله پس از عملیات، داده‌ها را تحلیل کند. و تیم من می‌توانند مرکز فرماندهی متحرک را برای بازخوانی‌های حضوری و تحلیل آماده کنند. من اطمینان می‌دهم که هرگونه ارتباطات دشمن بازداشته شده بلافاصله رمزگشایی شود تا اطلاعات قابل اقدام به دست آید. خوب. کارایی و جمع‌آوری اطلاعات می‌توانند روند این جنگ را تغییر دهند، آقایان. با اجازه شما، ژنرال، من می‌توانم دستورات عملیاتی را تنظیم و به هر واحد تا ساعت ۶ صبح توزیع کنم. اجازه داده شد."
+    },
+    {
+      "text": " vortex. Ensure those orders are encrypted. We cannot accept risk of interception. I'll get our comms team to set up encrypted channels for the operation. Over. And I'll have my squad run through combat sims this evening. We need to be freaking sharp. I'll schedule stealth and evasion drills for my team. We cannot afford any mistakes.",
+      "start": 348.866,
+      "end": 372.894,
+      "_idx": 13,
+      "fa_clean": "وُرَج. اطمینان حاصل کنید که این دستورات رمزگذاری شده‌اند. نمی‌توانیم خطر شنیده شدن را بپذیریم. تیم ارتباطات ما کانال‌های رمزگذاری شده برای عملیات را برپا خواهد کرد. تمام شد. و تیم من تمرین‌های شبیه‌سازی نبرد و تمرین‌های مخفی‌کاری و فرار را اینEvening انجام خواهد داد. ما نمی‌توانیم هیچ اشتباهی مرتکب شویم."
+    },
+    {
+      "text": " and my teams will conduct electronic warfare drills to ensure our systems are fully operational. That's the spirit, Valor. Remember, everyone, this is more than just another battle. We're fighting for the future of Eridia. These citizens rely on us to keep them safe and to push back these invaders. They won't let you down, Sheriff. We'll ensure that. Right, Skye? It ain't just about winning the battle. It's about how we win.",
+      "start": 374.498,
+      "end": 401.822,
+      "_idx": 14,
+      "fa_clean": "تیم‌های من مانورهای جنگ الکترونیک انجام خواهند داد تا از عملکرد کامل سیستم‌ها اطمینان حاصل شود. روحیه این‌گونه باشد، والور. به یاد داشته باشید، این بیش از یک نبرد دیگر است. ما برای آینده‌ی اریدیای ما می‌جنگیم. این شهروندان به ما تکیه دارند تا آن‌ها را حفظ کنند و این مهاجمان را دفع نمایند. آن‌ها شما را ناامید نخواهند کرد، شریفه. ما این اطمینان را حاصل خواهیم کرد. درست است، اسکی؟ این فقط درباره‌ی پیروزی در نبرد نیست. این درباره‌ی این است که چگونه پیروز می‌شویم."
+    },
+    {
+      "text": " Our integrity as a force must be upheld. Yeah, we'll show them the might of Iridia, but also the honor of our forces. Stealth and precision are my team's guiding principles. We'll strike without them even knowing what hit them. And our electronic warfare teams will make sure the enemy is blinded, deafened, and disoriented. Good deal, Valor. Let's maintain that mindset. Iridia doesn't just need warriors, it needs heroes.",
+      "start": 402.402,
+      "end": 431.998,
+      "_idx": 15,
+      "fa_clean": "ایجادِ اعتبارِ نیرو، امری ضروری است. بله، نشان خواهیم داد که نیروی ایریدیه چه قدرتها را دارد، اما همچنین، افتخار نیروهای ما را نیز به نمایش خواهیم گذاشت. پنهان‌کاری و دقت، اصول راهنما برای تیم ما هستند. ما بدون اینکه آن‌ها متوجه شوند، حمله خواهیم کرد. و تیم‌های جنگ الکترونیک ما، اطمینان خواهند داد که دشمن کور، صبور و سردرگم شود."
+    },
+    {
+      "text": " people who can inspire, people that can lead by example. Absolutely, sir. Our actions today will be remembered for generations. We carry that responsibility. Speaking of which, responsibility that is, I'll coordinate with the medical teams to ensure they're prepared for any casualties. My team's survival training will be put to the test, but I think we've prepared for this. We've all been through the simulations, but the real thing, it's different.",
+      "start": 432.674,
+      "end": 462.43,
+      "_idx": 16,
+      "fa_clean": "افرادِ توانمند که می‌توانند الهام‌بخش باشند و با عمل خود به دیگران راهنمایی کنند. قطعاً، آقا. اعمال ما امروز برای نسل‌ها به یاد خواهد ماند. ما این مسئولیت را به دوش می‌گیریم. به این باره، مسئولیت یعنی من با تیم‌های پزشکی هماهنگ خواهم کرد تا اطمینان حاصل کنم که برای هرگونه تلفات آماده هستند. آموزش‌های بقای تیم ما به چالش کشیده خواهد شد، اما فکر می‌کنیم برای این آماده شده‌ایم. ما همه از شبیه‌سازی‌ها گذر کرده‌ایم، اما واقعیت چیز دیگری است."
+    },
+    {
+      "text": " We'll be ready for that unpredictability of war. And my teams are well-versed in adapting to electronic warfare scenarios. We'll be ready to counter any surprises. Indeed. War is the ultimate test of our resolve. But remember, we're not just fighting for victory. We're fighting to bring our people peace. Roger that, sir. Let's bring them peace through decisive combat. And we won't even know what hit them.",
+      "start": 462.914,
+      "end": 491.678,
+      "_idx": 17,
+      "fa_clean": "ما برای ناپredی‌بینی‌های جنگ آماده‌ایم. و تیم‌های من در سناریوهای جنگ الکترونیک ماهر هستند. ما برای مقابله با هرگونه شگفتی آماده‌ایم. واقعاً جنگ آزمون نهایی اراده ماست. اما به یاد داشته باشید که ما فقط برای پیروزی نمی‌جنگیم، بلکه برای آوردن صلح به مردممان می‌جنگیم. تایید شد، فرمانده. بیایید با نبرد قاطع، صلح را به آن‌ها بازگردانیم. و ما حتی نمی‌دانیم آن‌ها را به چه چیزی گرفتار کرده‌ایم."
+    },
+    {
+      "text": " We've got the element of surprise and superior tactics. Hot damn. And not to mention the best damn fighters in the galaxy. Our squads are unmatched. With stealth on our side, we'll be the sun blade that secures victory. And our electronic warfare teams will ensure that the enemy is left in the dark unable to respond. We are the shield of Iridia and the sword that defends our home.",
+      "start": 492.066,
+      "end": 521.662,
+      "_idx": 18,
+      "fa_clean": "ما با عنصر غافلگیری و تاکتیک‌های برتر داریم. به گمانه‌زنی نیست، بهترین جنگنده‌ها در این کهکشان را داریم. تیم‌های ما بی‌نظیر هستند. با استفاده از پنهان‌کاری، ما تیغهٔ خورشید خواهیم بود که پیروزی را تضمین می‌کند. و تیم‌های جنگ الکترونیک ما اطمینان حاصل می‌کنند که دشمن در تاریکی باقی می‌ماند و نمی‌تواند پاسخ دهد. ما سپر ایریدیاییم و شمشیر دفاعی از خانهٔ خود."
+    },
+    {
+      "text": " Let's make sure that sword strikes true. Every logistic, every bullet, every strategy is geared towards victory. We've trained for this. Our troops are ready. And our fighters are primed. The sky belongs to us. And the shadows are our allies. We move unseen, but our impact will be felt. Our electronic warfare will ensure the enemy systems fail them when they need them most.",
+      "start": 522.626,
+      "end": 551.39,
+      "_idx": 19,
+      "fa_clean": "سلاح‌های سرد باید دقیق باشند. هرگونه لجستیک، هر گلوله و هر استراتژی به سوی پیروزی هدف‌گیری می‌شود. ما برای این آماده شده‌ایم. نیروهایمان آماده هستند و جنگنده‌هایمان آماده‌اند. آسمان به ما تعلق دارد و سایه‌ها متحد ما هستند. ما به صورت نامحسوس حرکت می‌کنیم، اما تأثیر ما احساس خواهد شد. جنگ الکترونیکی ما اطمینان حاصل می‌کند که سیستم‌های دشمن در زمان نیاز آن‌ها از کار می‌افتند."
+    },
+    {
+      "text": " Then it's settled, gentlemen. Operation Blue Nebula is in full effect. Let's show them the might of our united forces. Let's make Orinia great again, guys. Dismissed.",
+      "start": 552.45,
+      "end": 565.918,
+      "_idx": 20,
+      "fa_clean": "پس تعیین‌شده است، آقایان. عملیات نیلی ابری به طور کامل در اجراست. بیایید قدرت نیروهای متحد خود را به آن‌ها نشان دهیم. بیایید اورینیا را دوباره greatness کنیم، بچه‌ها. اخراج شد."
+    }
+  ],
+  "language": "en"
+}

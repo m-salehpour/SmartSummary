@@ -2,6 +2,10 @@ from __future__ import annotations
 from dotenv import load_dotenv
 load_dotenv()
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # HF_TOKEN = os.getenv("HF_TOKEN")
 import sys, subprocess, logging
 from pathlib import Path
@@ -163,14 +167,65 @@ def cache_silero_vad(torch_hub_dir: Path, force: bool = False) -> None:
         onnx=False,
     )
 
-    # Sanity-check: the utils tuple should contain expected callables
-    # required_utils = {"get_speech_timestamps", "read_audio", "VADIterator", "collect_chunks", "save_audio"}
-    # available_utils = set(name for name in dir(utils) if not name.startswith("_"))
-    # missing = required_utils - available_utils
-    # if missing:
-    #     raise RuntimeError(f"Silero VAD utils missing expected members: {sorted(missing)}")
-
     logging.info("✅ Silero VAD cached successfully (model + utils)")
+
+
+def cache_wav2vec2_base(torch_home: Path, force: bool = False) -> Path:
+    """
+    Pre-download torchaudio's Wav2Vec2 base ASR checkpoint (LS-960).
+    Prefer saving directly under: <torch_home>/checkpoints/wav2vec2_fairseq_base_ls960_asr_ls960.pth
+    Falls back to torchaudio pipeline (which may use <torch_home>/hub/checkpoints).
+
+    Returns the path to the cached .pth file.
+    Raises RuntimeError if caching fails.
+    """
+    import os
+    import torch
+    import torchaudio
+
+    url = "https://download.pytorch.org/torchaudio/models/wav2vec2_fairseq_base_ls960_asr_ls960.pth"
+    filename = Path(url).name
+
+    # Preferred destination (no extra '/hub')
+    ckpt_dir = Path(torch_home) / "checkpoints"
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    dest = ckpt_dir / filename
+
+    if dest.exists() and not force:
+        logger.info(f"Already cached: {dest}")
+        return dest
+
+    # Try direct download to the preferred directory
+    try:
+        logger.info("Caching Wav2Vec2 (direct URL → checkpoints)…")
+        torch.hub.load_state_dict_from_url(url, model_dir=str(ckpt_dir), progress=True)
+        if dest.exists():
+            logger.info(f"✅ Cached: {dest}")
+            return dest
+    except Exception as e:
+        logger.warning(f"Direct download failed ({e}). Falling back to torchaudio pipeline…")
+
+    # Fallback: torchaudio pipeline (writes to TORCH_HOME/hub/checkpoints)
+    try:
+        # Ensure TORCH_HOME so torchaudio uses your chosen root
+        os.environ.setdefault("TORCH_HOME", str(torch_home))
+        _ = torchaudio.pipelines.WAV2VEC2_ASR_BASE_960H.get_model()
+    except Exception as e:
+        logger.error(f"torchaudio pipeline fallback failed: {e}")
+
+    # Check both preferred and torchaudio's default hub path
+    alt = Path(torch_home) / "hub" / "checkpoints" / filename
+    if dest.exists():
+        logger.info(f"✅ Cached: {dest}")
+        return dest
+    if alt.exists():
+        logger.info(f"✅ Cached (hub path): {alt}")
+        return alt
+
+    raise RuntimeError(
+        "Failed to cache wav2vec2 checkpoint. Check connectivity for first-time bootstrap "
+        "or verify write permissions under TORCH_HOME."
+    )
 
 
 def bootstrap_offline_assets():
@@ -214,6 +269,10 @@ def bootstrap_offline_assets():
     _download_with_gdown("1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns", NEVISE_VOCAB)
 
     cache_silero_vad(TORCH_HUB, force=False)
+
+    # Note: comment if alignment is not central to the pipeline
+    cache_wav2vec2_base(TORCH_HUB, force=False)
+
 
 
     # 4) NLTK punkt
