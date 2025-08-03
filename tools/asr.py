@@ -7,7 +7,7 @@ from typing import Optional, Dict
 import whisperx
 
 import config
-from init_env import FW_MEDIUM_DIR, HF_ROOT
+from config import HF_ROOT, FW_MEDIUM_DIR
 
 # keep your existing imports
 from normalizers import cleaning as no_llm_clean

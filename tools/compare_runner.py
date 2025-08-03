@@ -30,8 +30,8 @@ def run_basic_comparisons(
     print_hyp: bool,
     print_ref: bool,
     fallback: str = config.FALLBACK_POLICY_FULL,
-    strip_speakers=True,
-    script_hint="latin",
+    strip_speakers: bool =True,
+    script_hint: str ="latin",
 ) -> Dict[str, Any]:
     """
     1) Build hyp from raw segments

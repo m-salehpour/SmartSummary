@@ -6,7 +6,8 @@ import numpy as np
 import transformers
 import torch
 from torch.nn.utils.rnn import pad_sequence
-from init_env import BERT_FA_DIR
+from config import BERT_FA_DIR
+
 
 def progressBar(value, endvalue, names, values, bar_length=30):
     assert(len(names)==len(values));
