@@ -1,5 +1,10 @@
 from __future__ import annotations
 from dotenv import load_dotenv
+
+import config
+from config import BOOTSTRAP, MODELS_ROOT, HF_ROOT, TORCH_HUB, NLTK_DATA, FW_MEDIUM_DIR, BERT_FA_DIR, NEVISE_DIR, \
+    FW_LARGE_V2_DIR
+
 load_dotenv()
 
 import logging
@@ -10,7 +15,6 @@ logger = logging.getLogger(__name__)
 import sys, subprocess, logging
 from pathlib import Path
 from download_utils import _download_with_gdown
-
 
 # ─── Configure root logger for INFO+ to stdout ────────────────────────────────
 logging.basicConfig(
@@ -35,24 +39,7 @@ nest_asyncio.apply()
 # ────────────────────────────────────────────────────────────────────────────────
 # Config: flip this via environment variable BOOTSTRAP_OFFLINE=1 on first run
 # ────────────────────────────────────────────────────────────────────────────────
-BOOTSTRAP = os.getenv("BOOTSTRAP_OFFLINE", "1").lower() in {"1", "true", "yes"}
 
-# Project paths
-ROOT = Path(__file__).resolve().parent
-MODELS_ROOT = ROOT / "models"              # all cached models live here
-HF_ROOT      = MODELS_ROOT / "hf"          # huggingface snapshots
-TORCH_HUB    = MODELS_ROOT / "torch_hub"   # torch hub cache (e.g., silero)
-NLTK_DATA    = MODELS_ROOT / "nltk_data"   # punkt, etc.
-
-# Local dirs for the 2 models you asked
-FW_MEDIUM_DIR = HF_ROOT / "Systran" / "faster-whisper-medium"
-BERT_FA_DIR  = HF_ROOT / "HooshvareLab" / "bert-fa-base-uncased"
-
-
-# Nevise assets (Persian)
-NEVISE_DIR   = ROOT / "tools" / "persian_normalize" / "Nevise" / "model"
-NEVISE_VOCAB = NEVISE_DIR / "vocab.pkl"
-NEVISE_CKPT  = NEVISE_DIR / "model.pth.tar"
 
 # Optional: make runtime default to local caches & offline
 os.environ.setdefault("HF_HOME", str(HF_ROOT))
@@ -247,6 +234,12 @@ def bootstrap_offline_assets():
         allow_patterns=None,  # keep full model so WhisperX can find everything
     )
 
+    _snapshot(
+        repo_id="Systran/faster-whisper-large-v2",
+        local_dir=FW_LARGE_V2_DIR,
+        allow_patterns=None,  # keep full model so WhisperX can find everything
+    )
+
     # 2b) Persian BERT tokenizer (only tokenizer artifacts to keep it medium)
     _snapshot(
         repo_id="HooshvareLab/bert-fa-base-uncased",
@@ -265,8 +258,8 @@ def bootstrap_offline_assets():
     # IDs you provided:
     #   vocab.pkl  -> 1Ki5WGR4yxftDEjROQLf9Br8KHef95k1F
     #   model.pth.tar -> 1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns
-    _download_with_gdown("1Ki5WGR4yxftDEjROQLf9Br8KHef95k1F", NEVISE_CKPT)
-    _download_with_gdown("1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns", NEVISE_VOCAB)
+    _download_with_gdown("1Ki5WGR4yxftDEjROQLf9Br8KHef95k1F", config.NEVISE_CKPT)
+    _download_with_gdown("1nKeMdDnxIJpOv-OeFj00UnhoChuaY5Ns", config.NEVISE_VOCAB)
 
     cache_silero_vad(TORCH_HUB, force=False)
 
