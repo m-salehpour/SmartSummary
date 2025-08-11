@@ -240,6 +240,12 @@ def bootstrap_offline_assets():
         allow_patterns=None,  # keep full model so WhisperX can find everything
     )
 
+    _snapshot(
+        repo_id="Systran/faster-whisper-large-v3",
+        local_dir=config.FW_LARGE_V3_DIR,
+        allow_patterns=None,  # keep full model so WhisperX can find everything
+    )
+
     # 2b) Persian BERT tokenizer (only tokenizer artifacts to keep it medium)
     _snapshot(
         repo_id="HooshvareLab/bert-fa-base-uncased",

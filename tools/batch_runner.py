@@ -12,7 +12,7 @@ from asr import evaluate_transcription
 # from tools.audio_utils import audio_info, resample_to_16k
 # from tools.asr import evaluate_transcription
 
-AUDIO_EXTS = {".wav", ".mp3", ".m4a", ".flac", ".ogg"}
+AUDIO_EXTS = {".wav", ".mp3", ".flac", ".ogg"}
 REF_EXTS   = {".txt", ".docx"}
 
 logger = logging.getLogger(__name__)
@@ -166,6 +166,8 @@ def run_batch_from_folder(
     fallback: Optional[str] = None,
     strip_speakers: Optional[bool] = None,
     script_hint: Optional[str] = None,
+    language: Optional[str] = None,
+
 ) -> List[Dict]:
     """
     Scan `folder` for (audio, ref) pairs and run ASR on up to `limit` pairs.
@@ -220,6 +222,7 @@ def run_batch_from_folder(
                 fallback=fallback,
                 strip_speakers=strip_speakers,
                 script_hint=script_hint,
+                language=language,
             )
             results.append({
                 "audio": str(audio_path),

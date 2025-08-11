@@ -13,9 +13,12 @@ DEVICE = "cpu"
 BATCH_SIZE = 16
 DEFAULT_MODEL = "medium"
 LARGE_V2_MODEL = "large-v2"
+LARGE_V3_MODEL = "large-v3"
 QUANT_TYPE_FLOAT_32 = "float32"   # or int8
 QUANT_TYPE_INT_8 = "int8"   # or int8
 OLLAMA_MODEL_TAG  = "gemma3:4b-it-q4_K_M"      # tweak freely
+# OLLAMA_MODEL_TAG  = "aya:8b"      # tweak freely
+# OLLAMA_MODEL_TAG  = "gemma3:27b"      # tweak freely
 OLLAMA_URL = "http://localhost:11434"
 JSON_ASR_OUTPUT_DIR = "asr_outputs"
 MODEL_DIR    = Path("persian_normalize/Nevise/model")
@@ -28,6 +31,8 @@ TORCH_HUB    = MODELS_ROOT / "torch_hub"   # torch hub cache (e.g., silero)
 NLTK_DATA    = MODELS_ROOT / "nltk_data"   # punkt, etc.
 FW_MEDIUM_DIR = HF_ROOT / "Systran" / "faster-whisper-medium"
 FW_LARGE_V2_DIR = HF_ROOT / "Systran" / "faster-whisper-large-v2"
+FW_LARGE_V3_DISTILL_DIR = HF_ROOT / "Systran" / "faster-distil-whisper-large-v3"
+FW_LARGE_V3_DIR = HF_ROOT / "Systran" / "faster-whisper-large-v3"
 BERT_FA_DIR  = HF_ROOT / "HooshvareLab" / "bert-fa-base-uncased"
 NEVISE_DIR   = ROOT / "tools" / "persian_normalize" / "Nevise" / "model"
 
@@ -49,3 +54,24 @@ YOUTUBE_URLS = [
     "https://youtu.be/EMAoQuv_6OU?si=HC_oVXNyJG-AxT0n",
 ]
 
+
+#
+# # 🔄 Load your previously saved segments.json
+# input_file_name = "response_1730994879150_output-farsi.mp3_16k_no_llm_cleaned_llm_from_no_llm.json"
+# input_file_path = "/Users/pouya/PycharmProjects/SmartSummary/tools/transcripts_json"
+# input = input_file_path +"/"+ input_file_name
+# with open(input, "r", encoding="utf-8") as f:
+#     segments = json.load(f)
+#
+# # 🚀 Run the translation using Ollama
+# # translated = translate_segments_with_ollama(segments)
+# translated = asyncio.run(run_translation(segments))
+#
+#
+# # 💾 Save to file
+# output_file_path = "/Users/pouya/PycharmProjects/SmartSummary/tools/translation_jsons"
+# output = output_file_path +"/"+ input_file_name
+# with open(output, "w", encoding="utf-8") as f:
+#     json.dump(translated, f, ensure_ascii=False, indent=2)
+#
+# print("✅ Translation complete and saved to 'translated_segments_ollama.json'")

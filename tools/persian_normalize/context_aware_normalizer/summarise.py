@@ -29,6 +29,20 @@ SUMMARY_PROMPT = (
     "مفاهیم تخصصی یا اصطلاحاتِ مهم را فهرست کن.\n"
 )
 
+
+SUMMARY_PROMPT_ENG = (
+    "📝 ENGLISH ONLY. In ≤200 words, write a formal summary of the text. "
+    "Then list all proper names, technical concepts, and key terms. "
+    "Be neutral and concise. Do not quote long passages. "
+    "Output must be in English even if the source text is Persian.\n\n"
+    "## Summary\n"
+    "{summary}\n\n"
+    "## Key Terms\n"
+    "- <Term 1>\n"
+    "- <Term 2>\n"
+    "- <Term 3>\n"
+)
+
 # ── cache directory (created on first run) ────────────────────────────
 CACHE_DIR = Path(".cache_summary")
 CACHE_DIR.mkdir(exist_ok=True)

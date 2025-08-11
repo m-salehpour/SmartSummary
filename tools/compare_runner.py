@@ -32,6 +32,7 @@ def run_basic_comparisons(
     fallback: str = config.FALLBACK_POLICY_FULL,
     strip_speakers: bool =True,
     script_hint: str ="latin",
+    prefix_message: str ="",
 ) -> Dict[str, Any]:
     """
     1) Build hyp from raw segments
@@ -63,7 +64,7 @@ def run_basic_comparisons(
     if print_hyp:
         print("\n[HYP RAW]\n", hyp_raw)
     print("\n=== RAW TRANSCRIPTION ===")
-    metrics_raw = compare_texts(hyp_raw, ref_text, diff=diff)
+    metrics_raw = compare_texts(hyp_raw, ref_text, diff=diff, prefix_message=prefix_message)
 
     # NO-LLM hyp
     # Defer to your language-aware normalizer that you import in ASR and pass here if desired
@@ -80,11 +81,12 @@ def run_no_llm_clean_and_compare(
     ref_text: str,
     diff: bool,
     print_hyp: bool,
+    prefix_message: str ="",
 ) -> Dict[str, Any]:
     if print_hyp:
         print("\n[HYP NO-LLM CLEAN]\n", hyp_no_llm)
     print("\n=== NO-LLM CLEANED ===")
-    metrics_no_llm = compare_texts(hyp_no_llm, ref_text, diff=diff)
+    metrics_no_llm = compare_texts(hyp_no_llm, ref_text, diff=diff, prefix_message=prefix_message)
     return {
         "hyp_no_llm": hyp_no_llm,
         "metrics_no_llm": metrics_no_llm,
@@ -97,6 +99,7 @@ def run_llm_clean_from_raw(
     diff: bool,
     print_hyp: bool,
     suffix: str = "_llm_from_raw",
+    prefix_message: str ="",
 ) -> Dict[str, Any]:
     """
     Runs LLM cleaner on the RAW transcript JSON saved by ASR.
@@ -107,7 +110,7 @@ def run_llm_clean_from_raw(
     if print_hyp:
         print("\n[HYP LLM(from raw)]\n", hyp_llm_raw)
     print("\n=== LLM-CLEANED FROM RAW ===")
-    metrics_llm_raw = compare_texts(hyp_llm_raw, ref_text, diff=diff)
+    metrics_llm_raw = compare_texts(hyp_llm_raw, ref_text, diff=diff, prefix_message=prefix_message)
     return {
         "hyp_llm_from_raw": hyp_llm_raw,
         "metrics_llm_from_raw": metrics_llm_raw,
@@ -123,6 +126,7 @@ def run_llm_clean_from_no_llm(
     print_hyp: bool,
     suffix_intermediate: str = "_no_llm_cleaned",
     suffix_final: str = "_llm_from_no_llm",
+    prefix_message: str ="",
 ) -> Dict[str, Any]:
     """
     Writes a minimal JSON for the NO-LLM string, runs LLM cleaner on it, then compares.
@@ -139,7 +143,7 @@ def run_llm_clean_from_no_llm(
     if print_hyp:
         print("\n[HYP LLM(from no-LLM)]\n", hyp_llm_no_llm)
     print("\n=== LLM-CLEANED FROM NO-LLM ===")
-    metrics_llm_no_llm = compare_texts(hyp_llm_no_llm, ref_text, diff=diff)
+    metrics_llm_no_llm = compare_texts(hyp_llm_no_llm, ref_text, diff=diff, prefix_message=prefix_message)
     return {
         "hyp_llm_from_no_llm": hyp_llm_no_llm,
         "metrics_llm_from_no_llm": metrics_llm_no_llm,
@@ -405,14 +409,15 @@ def diff_word_level(ref: str, hyp: str) -> List[str]:
 def compare_texts(
     hyp: str,
     ref: str,
-    diff: bool = False
+    diff: bool = False,
+    prefix_message: str = "",
 ) -> Dict[str, Any]:
     """
     Compute and optionally print WER metrics and word-level diff.
     Returns the metrics dict.
     """
     metrics = compute_wer_metrics(hyp, ref)
-    logging.info(f"📊 WER: {metrics['wer']:.2%} | S={metrics['substitutions']} D={metrics['deletions']} I={metrics['insertions']}")
+    logging.info(f"📊{prefix_message} WER: {metrics['wer']:.2%} | S={metrics['substitutions']} D={metrics['deletions']} I={metrics['insertions']}")
     if diff:
         diffs = diff_word_level(ref, hyp)
         logging.info("🔍 Word-level diff:")
