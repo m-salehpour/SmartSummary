@@ -3,36 +3,18 @@
 
 from typing import List
 
-from hazm.utils import default_verbs
-from hazm.utils import default_words
-from hazm.utils import stopwords_list
-from hazm.utils import words_list
-from hazm.utils import maketrans
-from hazm.utils import regex_replace
-from hazm.utils import words_list
-from hazm.utils import NUMBERS
-from hazm.utils import informal_verbs
-from hazm.utils import informal_words
-from hazm.utils import abbreviations
-
-from hazm.sequence_tagger import IOBTagger
-from hazm.sequence_tagger import SequenceTagger
-
+from hazm.chunker import Chunker, RuleBasedChunker, tree2brackets
+from hazm.lemmatizer import Conjugation, Lemmatizer
+from hazm.normalizer import Normalizer
 from hazm.pos_tagger import POSTagger
-
+from hazm.sentence_tokenizer import SentenceTokenizer
+from hazm.sequence_tagger import IOBTagger, SequenceTagger
 from hazm.stemmer import Stemmer
+from hazm.utils import (NUMBERS, abbreviations, default_verbs, default_words,
+                        informal_verbs, informal_words, maketrans,
+                        regex_replace, stopwords_list, words_list)
 from hazm.word_tokenizer import WordTokenizer
 
-from hazm.lemmatizer import Conjugation
-from hazm.lemmatizer import Lemmatizer
-
-from hazm.normalizer import Normalizer
-
-from hazm.chunker import Chunker
-from hazm.chunker import RuleBasedChunker
-from hazm.chunker import tree2brackets
-
-from hazm.sentence_tokenizer import SentenceTokenizer
 
 def sent_tokenize(text: str) -> List[str]:
     """Sentence Tokenizer."""
@@ -47,39 +29,18 @@ def word_tokenize(sentence: str) -> List[str]:
         word_tokenize.tokenizer = WordTokenizer()
     return word_tokenize.tokenizer.tokenize(sentence)
 
-from hazm.corpus_readers import PeykareReader
-from hazm.corpus_readers import BijankhanReader
-from hazm.corpus_readers import DadeganReader
-from hazm.corpus_readers import UniversalDadeganReader
-from hazm.corpus_readers import DegarbayanReader
-from hazm.corpus_readers import HamshahriReader
-from hazm.corpus_readers import MirasTextReader
-from hazm.corpus_readers import PersicaReader
-from hazm.corpus_readers import QuranReader
-from hazm.corpus_readers import SentiPersReader
-from hazm.corpus_readers import TNewsReader
-from hazm.corpus_readers import TreebankReader
-from hazm.corpus_readers import VerbValencyReader
-from hazm.corpus_readers import PersianPlainTextReader
-from hazm.corpus_readers import WikipediaReader
-from hazm.corpus_readers import MizanReader
-from hazm.corpus_readers import NerReader
-from hazm.corpus_readers import NaabReader
-from hazm.corpus_readers import ArmanReader
-from hazm.corpus_readers import FaSpellReader
-from hazm.corpus_readers import PnSummaryReader
 
-
-from hazm.dependency_parser import DependencyParser
-from hazm.dependency_parser import MaltParser
-from hazm.dependency_parser import TurboParser
+from hazm.corpus_readers import (ArmanReader, BijankhanReader, DadeganReader,
+                                 DegarbayanReader, FaSpellReader,
+                                 HamshahriReader, MirasTextReader, MizanReader,
+                                 NaabReader, NerReader, PersianPlainTextReader,
+                                 PersicaReader, PeykareReader, PnSummaryReader,
+                                 QuranReader, SentiPersReader, TNewsReader,
+                                 TreebankReader, UniversalDadeganReader,
+                                 VerbValencyReader, WikipediaReader)
+from hazm.dependency_parser import DependencyParser, MaltParser, TurboParser
+from hazm.informal_normalizer import InformalLemmatizer, InformalNormalizer
+from hazm.token_splitter import TokenSplitter
 
 # from hazm.embedding import SentEmbedding
 # from hazm.embedding import WordEmbedding
-
-from hazm.informal_normalizer import InformalLemmatizer
-from hazm.informal_normalizer import InformalNormalizer
-
-from hazm.token_splitter import TokenSplitter
-
-

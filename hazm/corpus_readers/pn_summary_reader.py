@@ -2,11 +2,10 @@
 
 پیکرهٔ [pn-summary](https://github.com/hooshvare/pn-summary) با هدف کمک به سیستم‌های یادگیری عمیق و ساخت مدل‌های بهتر برای خلاصه‌سازی دقیق‌تر متن‌های فارسی تهیه شده است. این پیکره شامل ۹۳,۲۰۷ متن خبری تمیزشده است که از ۶ خبرگزاری فارسی و از میان حدوداً ۲۰۰ هزار خبر استخراج شده است.
 """
+
 import csv
 from pathlib import Path
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Iterator, List, Tuple
 
 
 class PnSummaryReader:
@@ -17,10 +16,14 @@ class PnSummaryReader:
         subset: نوع دیتاست: `test` یا `train` یا `dev`
     """
 
-    def __init__(self: "PnSummaryReader", corpus_folder: str, subset: str="train") -> None:
-        self._file_paths=Path(corpus_folder).glob(f"{subset}*.csv")
+    def __init__(
+        self: "PnSummaryReader", corpus_folder: str, subset: str = "train"
+    ) -> None:
+        self._file_paths = Path(corpus_folder).glob(f"{subset}*.csv")
 
-    def docs(self: "PnSummaryReader") -> Iterator[Tuple[str, str, str, str, str, List[str], str, str]]:
+    def docs(
+        self: "PnSummaryReader",
+    ) -> Iterator[Tuple[str, str, str, str, str, List[str], str, str]]:
         """خبرها را یک‌به‌یک برمی‌گرداند.
 
         Examples:
@@ -41,11 +44,29 @@ class PnSummaryReader:
            خبر بعدی در قالب `(شناسه, عنوان, متن خبر ,خلاصهٔ خبر, موضوع خبر به انگلیسی, [موضوع ۱ به فارسی، موضوع ۲ به فارسی، ...], منبع, لینک)`
         """
         for file_path in self._file_paths:
-                with Path(file_path).open("r", encoding="utf-8") as file:
-                    reader = csv.reader(file, delimiter="\t")
-                    next(reader)  # Skip the header row
+            with Path(file_path).open("r", encoding="utf-8") as file:
+                reader = csv.reader(file, delimiter="\t")
+                next(reader)  # Skip the header row
 
-                    for row in reader:
-                        _id, title, article, summary, category, categories, network, link = (field.strip() for field in row)
-                        categories = categories.split("+")
-                        yield (_id, title, article, summary, category, categories, network, link)
+                for row in reader:
+                    (
+                        _id,
+                        title,
+                        article,
+                        summary,
+                        category,
+                        categories,
+                        network,
+                        link,
+                    ) = (field.strip() for field in row)
+                    categories = categories.split("+")
+                    yield (
+                        _id,
+                        title,
+                        article,
+                        summary,
+                        category,
+                        categories,
+                        network,
+                        link,
+                    )

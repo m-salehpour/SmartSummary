@@ -3,13 +3,9 @@
 PerDT حاوی تعداد قابل‌توجهی جملۀ برچسب‌خورده با اطلاعات نحوی و ساخت‌واژی است.
 
 """
+
 from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
-from typing import List
-from typing import Tuple
-from typing import Type
+from typing import Any, Dict, Iterator, List, Tuple, Type
 
 from nltk.parse import DependencyGraph
 from nltk.tree import Tree
@@ -51,7 +47,7 @@ def coarse_pos_u(tags: List[str], word: str) -> str:
     return pos_mapped
 
 
-def coarse_pos_e(tags: List[str], word) -> str: # noqa: ARG001
+def coarse_pos_e(tags: List[str], word) -> str:  # noqa: ARG001
     """برچسب‌های ریز را به برچسب‌های درشت (coarse-grained pos tags) تبدیل می‌کند.
 
     Examples:

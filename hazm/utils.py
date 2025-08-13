@@ -1,13 +1,8 @@
 """این ماژول شامل کلاس‌ها و توابع کمکی است."""
 
 import re
-from os import path
 from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Any, Dict, List, Tuple
 
 data_path = Path(__file__).parent / "data"
 
@@ -102,9 +97,9 @@ def present_roots() -> str:
 
 def regex_replace(patterns: str, text: str) -> str:
     """الگوی ریجکس را یافته و با متن داده شده جایگزین می‌کند."""
-    compiled_patterns = [(re.compile(pattern), repl) for pattern, repl in patterns]    
+    compiled_patterns = [(re.compile(pattern), repl) for pattern, repl in patterns]
 
     for pattern, repl in compiled_patterns:
         text = pattern.sub(repl, text)
-    
+
     return text

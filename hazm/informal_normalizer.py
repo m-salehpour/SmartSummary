@@ -1,19 +1,11 @@
 """این ماژول شامل کلاس‌ها و توابعی برای نرمال‌سازی متن‌های محاوره‌ای است."""
 
-
 import re
 from pathlib import Path
 from typing import List
 
-from hazm import NUMBERS
-from hazm import Lemmatizer
-from hazm import Normalizer
-from hazm import SentenceTokenizer
-from hazm import Stemmer
-from hazm import WordTokenizer
-from hazm import default_verbs
-from hazm import informal_verbs
-from hazm import informal_words
+from hazm import (NUMBERS, Lemmatizer, Normalizer, SentenceTokenizer, Stemmer,
+                  WordTokenizer, default_verbs, informal_verbs, informal_words)
 
 
 class InformalNormalizer(Normalizer):

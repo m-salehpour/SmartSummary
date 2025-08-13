@@ -17,7 +17,6 @@
 
 """
 
-
 from collections import namedtuple
 from pathlib import Path
 from typing import Iterator
@@ -44,7 +43,8 @@ class VerbValencyReader:
     """
 
     def __init__(
-        self: "VerbValencyReader", valency_file: str = "valency.txt",
+        self: "VerbValencyReader",
+        valency_file: str = "valency.txt",
     ) -> None:
         self._valency_file = valency_file
 

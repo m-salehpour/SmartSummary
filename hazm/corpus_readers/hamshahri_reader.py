@@ -12,13 +12,10 @@ crawl
 
 """
 
-
 import os
 import re
 import sys
-from pathlib import Path
-from typing import Dict
-from typing import Iterator
+from typing import Dict, Iterator
 from xml.dom import minidom
 
 
@@ -106,7 +103,7 @@ class HamshahriReader:
                     continue
 
                 try:
-                    elements = minidom.parse(os.path.join(root, name)) # noqa: PTH118
+                    elements = minidom.parse(os.path.join(root, name))  # noqa: PTH118
                     for element in elements.getElementsByTagName("DOC"):
                         doc = {
                             "id": (

@@ -10,13 +10,9 @@
 
 """
 
-
 from typing import List
 
-from hazm import Stemmer
-from hazm import WordTokenizer
-from hazm import default_verbs
-from hazm import default_words
+from hazm import Stemmer, WordTokenizer, default_verbs, default_words
 
 
 class Lemmatizer:
@@ -441,7 +437,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.subjunctive_present_perfect("شد")]
 
     def negative_passive_subjunctive_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل در وجه التزامی در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -478,7 +475,8 @@ class Conjugation:
         ]
 
     def negative_passive_grammatical_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل در وجه دستوری در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -515,7 +513,8 @@ class Conjugation:
         return ["می‌" + x for x in self.present_perfect(ri)]
 
     def negative_imperfective_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل پایا به‌شکل منفی صرف می‌کند.
 
@@ -533,7 +532,8 @@ class Conjugation:
         return ["ن" + x for x in self.imperfective_present_perfect(ri)]
 
     def subjunctive_imperfective_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل پایا در وجه التزامی صرف می‌کند.
 
@@ -551,7 +551,8 @@ class Conjugation:
         return ["می‌" + x for x in self.subjunctive_present_perfect(ri)]
 
     def negative_subjunctive_imperfective_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل پایا در وجه التزامی به‌شکل منفی صرف می‌کند.
 
@@ -585,7 +586,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.imperfective_present_perfect("شد")]
 
     def negative_passive_imperfective_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل پایا در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -603,7 +605,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.negative_imperfective_present_perfect("شد")]
 
     def passive_subjunctive_imperfective_present_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال کامل پایا در وجه التزامی در حالت مجهول صرف می‌کند.
 
@@ -801,7 +804,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.imperfective_past_precedent("شد")]
 
     def negative_passive_imperfective_past_precedent(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین پایا در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -911,7 +915,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.subjunctive_present_perfect("بود")]
 
     def negative_subjunctive_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه التزامی به‌شکل منفی صرف می‌کند.
 
@@ -948,7 +953,8 @@ class Conjugation:
         ]
 
     def negative_grammatical_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه دستوری به‌شکل منفی صرف می‌کند.
 
@@ -982,7 +988,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.past_precedent_perfect("شد")]
 
     def negative_passive_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1000,7 +1007,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.negative_past_precedent_perfect("شد")]
 
     def passive_subjunctive_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه التزامی در حالت مجهول صرف می‌کند.
 
@@ -1018,7 +1026,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.subjunctive_past_precedent_perfect("شد")]
 
     def negative_passive_subjunctive_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه التزامی در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1038,7 +1047,8 @@ class Conjugation:
         ]
 
     def passive_grammatical_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه دستوری در حالت مجهول صرف می‌کند.
 
@@ -1056,7 +1066,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.grammatical_past_precedent_perfect("شد")]
 
     def negative_passive_grammatical_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل در وجه دستوری در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1093,7 +1104,8 @@ class Conjugation:
         return ["می‌" + x for x in self.past_precedent_perfect(ri)]
 
     def negative_imperfective_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل پایا به‌شکل منفی صرف می‌کند.
 
@@ -1111,7 +1123,8 @@ class Conjugation:
         return ["ن" + x for x in self.imperfective_past_precedent_perfect(ri)]
 
     def subjunctive_imperfective_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل پایا در وجه التزامی صرف می‌کند.
 
@@ -1150,7 +1163,8 @@ class Conjugation:
         ]
 
     def passive_imperfective_past_precedent_perfect(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل پایا در حالت مجهول صرف می‌کند.
 
@@ -1256,7 +1270,8 @@ class Conjugation:
         ]
 
     def passive_past_precedent_perfect_progressive(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان گذشتهٔ پیشین کامل استمراری در حالت مجهول صرف می‌کند.
 
@@ -1328,7 +1343,8 @@ class Conjugation:
         return ["ب" + x for x in self.perfective_present(rii)]
 
     def negative_subjunctive_perfective_present(
-        self: "Conjugation", rii: str,
+        self: "Conjugation",
+        rii: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه التزامی به‌شکل منفی صرف می‌کند.
 
@@ -1365,7 +1381,8 @@ class Conjugation:
         ]
 
     def negative_grammatical_perfective_present(
-        self: "Conjugation", rii: str,
+        self: "Conjugation",
+        rii: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه دستوری به‌شکل منفی صرف می‌کند.
 
@@ -1417,7 +1434,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.negative_perfective_present("شو")]
 
     def passive_subjunctive_perfective_present(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه التزامی در حالت مجهول صرف می‌کند.
 
@@ -1435,7 +1453,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.subjunctive_perfective_present("شو")]
 
     def negative_passive_subjunctive_perfective_present(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه التزامی در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1455,7 +1474,8 @@ class Conjugation:
         ]
 
     def passive_grammatical_perfective_present(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه دستوری در حالت مجهول صرف می‌کند.
 
@@ -1476,7 +1496,8 @@ class Conjugation:
         ]
 
     def negative_passive_grammatical_perfective_present(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال مطلق در وجه دستوری در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1545,7 +1566,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.imperfective_present("شو")]
 
     def negative_passive_imperfective_present(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان حال پایا در حالت مجهول به‌شکل منفی صرف می‌کند.
 
@@ -1815,7 +1837,8 @@ class Conjugation:
         return ["می‌" + x for x in self.future_precedent(ri)]
 
     def negative_future_precedent_imperfective(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان آیندهٔ پیشین پایا به‌شکل منفی صرف می‌کند.
 
@@ -1833,7 +1856,8 @@ class Conjugation:
         return ["ن" + x for x in self.future_precedent_imperfective(ri)]
 
     def passive_future_precedent_imperfective(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان آیندهٔ پیشین پایا در حالت مجهول صرف می‌کند.
 
@@ -1851,7 +1875,8 @@ class Conjugation:
         return [ri + "ه " + x for x in self.future_precedent_imperfective("شد")]
 
     def negative_passive_future_precedent_imperfective(
-        self: "Conjugation", ri: str,
+        self: "Conjugation",
+        ri: str,
     ) -> List[str]:
         """فعل را در زمان آیندهٔ پیشین پایا در حالت مجهول به‌شکل منفی صرف می‌کند.
 

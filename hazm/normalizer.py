@@ -1,13 +1,9 @@
 """این ماژول شامل کلاس‌ها و توابعی برای نرمال‌سازی متن است."""
 
-
 import re
 from typing import List
 
-from hazm import Lemmatizer
-from hazm import WordTokenizer
-from hazm import maketrans
-from hazm import regex_replace
+from hazm import Lemmatizer, WordTokenizer, maketrans, regex_replace
 
 
 class Normalizer:
@@ -46,9 +42,7 @@ class Normalizer:
         self._seperate_mi = seperate_mi
 
         self.translation_src = "ؠػػؽؾؿكيٮٯٷٸٹٺٻټٽٿڀځٵٶٷٸٹٺٻټٽٿڀځڂڅڇڈډڊڋڌڍڎڏڐڑڒړڔڕږڗڙښڛڜڝڞڟڠڡڢڣڤڥڦڧڨڪګڬڭڮڰڱڲڳڴڵڶڷڸڹںڻڼڽھڿہۂۃۄۅۆۇۈۉۊۋۏۍێېۑےۓەۮۯۺۻۼۿݐݑݒݓݔݕݖݗݘݙݚݛݜݝݞݟݠݡݢݣݤݥݦݧݨݩݪݫݬݭݮݯݰݱݲݳݴݵݶݷݸݹݺݻݼݽݾݿࢠࢡࢢࢣࢤࢥࢦࢧࢨࢩࢪࢫࢮࢯࢰࢱࢬࢲࢳࢴࢶࢷࢸࢹࢺࢻࢼࢽﭐﭑﭒﭓﭔﭕﭖﭗﭘﭙﭚﭛﭜﭝﭞﭟﭠﭡﭢﭣﭤﭥﭦﭧﭨﭩﭮﭯﭰﭱﭲﭳﭴﭵﭶﭷﭸﭹﭺﭻﭼﭽﭾﭿﮀﮁﮂﮃﮄﮅﮆﮇﮈﮉﮊﮋﮌﮍﮎﮏﮐﮑﮒﮓﮔﮕﮖﮗﮘﮙﮚﮛﮜﮝﮞﮟﮠﮡﮢﮣﮤﮥﮦﮧﮨﮩﮪﮫﮬﮭﮮﮯﮰﮱﺀﺁﺃﺄﺅﺆﺇﺈﺉﺊﺋﺌﺍﺎﺏﺐﺑﺒﺕﺖﺗﺘﺙﺚﺛﺜﺝﺞﺟﺠﺡﺢﺣﺤﺥﺦﺧﺨﺩﺪﺫﺬﺭﺮﺯﺰﺱﺲﺳﺴﺵﺶﺷﺸﺹﺺﺻﺼﺽﺾﺿﻀﻁﻂﻃﻄﻅﻆﻇﻈﻉﻊﻋﻌﻍﻎﻏﻐﻑﻒﻓﻔﻕﻖﻗﻘﻙﻚﻛﻜﻝﻞﻟﻠﻡﻢﻣﻤﻥﻦﻧﻨﻩﻪﻫﻬﻭﻮﻯﻰﻱﻲﻳﻴىكي“” "
-        self.translation_dst = (
-            'یککیییکیبقویتتبتتتبحاوویتتبتتتبحححچدددددددددررررررررسسسصصطعففففففققکککککگگگگگللللنننننهچهههوووووووووییییییهدرشضغهبببببببححددرسعععففکککممنننلررسححسرحاایییووییحسسکببجطفقلمییرودصگویزعکبپتریفقنااببببپپپپببببتتتتتتتتتتتتففففححححححححچچچچچچچچددددددددژژررککککگگگگگگگگگگگگننننننههههههههههییییءاااووااییییااببببتتتتثثثثججججححححخخخخددذذررززسسسسششششصصصصضضضضططططظظظظععععغغغغففففققققککککللللممممننننههههوویییییییکی"" '
-        )
+        self.translation_dst = 'یککیییکیبقویتتبتتتبحاوویتتبتتتبحححچدددددددددررررررررسسسصصطعففففففققکککککگگگگگللللنننننهچهههوووووووووییییییهدرشضغهبببببببححددرسعععففکککممنننلررسححسرحاایییووییحسسکببجطفقلمییرودصگویزعکبپتریفقنااببببپپپپببببتتتتتتتتتتتتففففححححححححچچچچچچچچددددددددژژررککککگگگگگگگگگگگگننننننههههههههههییییءاااووااییییااببببتتتتثثثثججججححححخخخخددذذررززسسسسششششصصصصضضضضططططظظظظععععغغغغففففققققککککللللممممننننههههوویییییییکی"" '
 
         if self._correct_spacing or self._decrease_repeated_chars:
             self.tokenizer = WordTokenizer(join_verb_parts=False)
@@ -277,7 +271,6 @@ class Normalizer:
         text = regex_replace(self.affix_spacing_patterns, text)
         return regex_replace(self.punctuation_spacing_patterns, text)
 
-
     def remove_diacritics(self: "Normalizer", text: str) -> str:
         """اِعراب را از متن حذف می‌کند.
 
@@ -467,6 +460,7 @@ class Normalizer:
             متنی با «می» و «نمی» جدا شده.
 
         """
+
         def replace_match(match):
             m = match.group(0)
             r = re.sub("^(ن?می)", r"\1‌", m)
@@ -474,8 +468,10 @@ class Normalizer:
                 return r
             return m
 
-        text = re.sub(r"\bن?می[آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی]+", replace_match, text)
-    
+        text = re.sub(
+            r"\bن?می[آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی]+", replace_match, text
+        )
+
         return text
 
     def token_spacing(self: "Normalizer", tokens: List[str]) -> List[str]:

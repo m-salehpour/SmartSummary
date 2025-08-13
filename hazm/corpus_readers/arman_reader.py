@@ -4,9 +4,7 @@
 """
 
 from pathlib import Path
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Iterator, List, Tuple
 
 
 class ArmanReader:
@@ -16,12 +14,14 @@ class ArmanReader:
         corpus_folder: مسیر فولدرِ حاوی فایل‌های پیکره.
         subset: نوع دیتاست: `test` یا `train`
     """
-    def __init__(self: "ArmanReader", corpus_folder: str, subset: str="train") -> None:
+
+    def __init__(
+        self: "ArmanReader", corpus_folder: str, subset: str = "train"
+    ) -> None:
         self._corpus_folder = corpus_folder
         self._file_paths = Path(corpus_folder).glob(f"{subset}*.txt")
 
-
-    def sents(self: "ArmanReader") -> Iterator[List[Tuple[str,str]]]:
+    def sents(self: "ArmanReader") -> Iterator[List[Tuple[str, str]]]:
         """جملات را یک‌به‌یک در قالب لیستی از `(توکن، برچسب)`ها برمی‌گرداند.
 
         Examples:

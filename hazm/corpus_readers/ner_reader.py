@@ -4,9 +4,7 @@
 """
 
 from pathlib import Path
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Iterator, List, Tuple
 
 
 class NerReader:
@@ -15,12 +13,12 @@ class NerReader:
     Args:
         corpus_folder: مسیر فولدرِ حاوی فایل‌های پیکره.
     """
+
     def __init__(self: "NerReader", corpus_folder: str) -> None:
         self._corpus_folder = corpus_folder
         self._file_paths = Path(corpus_folder).glob("*.txt")
 
-
-    def sents(self: "NerReader") -> Iterator[List[Tuple[str,str]]]:
+    def sents(self: "NerReader") -> Iterator[List[Tuple[str, str]]]:
         """جملات را یک‌به‌یک در قالب لیستی از `(توکن، برچسب)`ها برمی‌گرداند.
 
         Examples:
