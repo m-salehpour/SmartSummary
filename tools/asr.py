@@ -7,7 +7,7 @@ from typing import Optional, Dict
 import whisperx
 
 import config
-from config import HF_ROOT, FW_MEDIUM_DIR
+from config import HF_ROOT, FW_MEDIUM_DIR, LARGE_V3_MODEL
 
 # keep your existing imports
 from normalizers import cleaning as no_llm_clean
@@ -71,6 +71,7 @@ def evaluate_transcription(
     fallback: str = config.FALLBACK_POLICY_FULL,
     strip_speakers: bool = False,
     script_hint: Optional[str] = None,  # e.g., "latin", "hebrew", "arabic"
+    language: Optional[str] = None,
 ):
     """
     1) Transcribe audio → raw segments
@@ -85,7 +86,7 @@ def evaluate_transcription(
     used_vad_method = vad_method or DEFAULT_VAD_METHOD
     merged_vad = {**DEFAULT_VAD_OPTIONS, **(vad_options or {})}
 
-    logger.info(f"[evaluate_transcription] loading model from...: {FW_MEDIUM_DIR}")
+    logger.info(f"[evaluate_transcription] loading model from...: {LARGE_V3_MODEL}")
 
     # 1) Transcribe (fully offline)
     model = whisperx.load_model(
@@ -97,6 +98,7 @@ def evaluate_transcription(
         vad_options=merged_vad,
         download_root=str(HF_ROOT),   # local HF cache
         local_files_only=True,        # no network
+        language=language,
     )
     audio = whisperx.load_audio(str(audio_p))
     result = model.transcribe(audio, batch_size=batch_size, print_progress=print_progress)
@@ -119,6 +121,7 @@ def evaluate_transcription(
         fallback=fallback,
         strip_speakers=strip_speakers,
         script_hint=script_hint,
+        prefix_message="Basic comparisons (RAW)"
     )
     ref_text   = base["ref_text"]
     hyp_raw    = base["hyp_raw"]
@@ -130,7 +133,12 @@ def evaluate_transcription(
         ref_text=ref_text,
         diff=diff,
         print_hyp=print_hyp,
+        prefix_message="No-LLM cleaned comparisons"
     )
+
+    logger.info(f"hyp_no_llm_raw_json")
+    hyp_no_llm_raw_json = save_transcription_result(no_llm_res, f"hyp_no_llm_{audio_path}", prefix="hyp_no_llm_raw_json")
+    print(f"✅ hyp_no_llm_raw_json transcript saved to {hyp_no_llm_raw_json}")
 
     # 5) LLM-based variants (optional)
     if llm_clean:
@@ -140,6 +148,7 @@ def evaluate_transcription(
             diff=diff,
             print_hyp=print_hyp,
             suffix="_llm_from_raw",
+            prefix_message="LLM cleaned from raw comparisons"
         )
 
         _ = run_llm_clean_from_no_llm(
@@ -150,6 +159,7 @@ def evaluate_transcription(
             print_hyp=print_hyp,
             suffix_intermediate="_no_llm_cleaned",
             suffix_final="_llm_from_no_llm",
+            prefix_message="LLM cleaned from no-lm clean comparisons"
         )
 
     return result

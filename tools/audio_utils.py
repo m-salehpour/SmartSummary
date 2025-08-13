@@ -62,3 +62,17 @@ def resample_to_16k(
     # 4) save
     torchaudio.save(str(dst_path), waveform, sample_rate=target_sr)
     return dst_path
+
+def maybe_resample_to_16k(audio_file):
+    ch, sr, dur = audio_info(audio_file)
+    print(f"input info: (channels={ch}, sr={sr}, dur={dur})")
+
+    # be tolerant in case sr is float (e.g., 16000.0)
+    if int(round(sr)) == 16000:
+        print("Already 16 kHz; skipping resample.")
+        return audio_file  # no change
+    else:
+        wav16 = resample_to_16k(audio_file)
+        print("Input file was resampled and saved to:", wav16)
+        print("output info:", audio_info(wav16))
+        return wav16
