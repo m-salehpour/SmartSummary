@@ -4,9 +4,9 @@
 این پیکره همچنین ۸۰۱ تشخیص اشتباه سیستم‌های OCR را نیز در بر دارد.
 
 """
+
 from pathlib import Path
-from typing import Iterator
-from typing import Tuple
+from typing import Iterator, Tuple
 
 
 class FaSpellReader:
@@ -23,8 +23,6 @@ class FaSpellReader:
         self._main_file_path = self._corpus_folder / "faspell_main.txt"
         self._ocr_file_path = self._corpus_folder / "faspell_ocr.txt"
 
-
-
     def main_entries(self: "FaSpellReader") -> Iterator[Tuple[str, str, int]]:
         """کلمات اشتباه و معادل درست آن‌ها را به همراه دسته‌بندی غلط در قالب یک تاپل `(شکل غلط کلمه، شکل صحیح کلمه، دسته‌بندی غلط)`، یک به یک برمی‌گرداند.
 
@@ -39,7 +37,7 @@ class FaSpellReader:
 
         """
         with Path(self._main_file_path).open("r", encoding="utf-8") as file:
-            next(file) # skip the first line (header line)
+            next(file)  # skip the first line (header line)
             for line in file:
                 parts = line.strip().split("\t")
                 misspelt, corrected, error_category = parts
@@ -60,7 +58,7 @@ class FaSpellReader:
 
         """
         with Path(self._ocr_file_path).open("r", encoding="utf-8") as file:
-            next(file) # skip the first line (header line)
+            next(file)  # skip the first line (header line)
             for line in file:
                 parts = line.strip().split("\t")
                 misspelt, corrected = parts

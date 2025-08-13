@@ -1,9 +1,10 @@
 from __future__ import annotations
+
 from dotenv import load_dotenv
 
 import config
-from config import BOOTSTRAP, MODELS_ROOT, HF_ROOT, TORCH_HUB, NLTK_DATA, FW_MEDIUM_DIR, BERT_FA_DIR, NEVISE_DIR, \
-    FW_LARGE_V2_DIR
+from config import (BERT_FA_DIR, BOOTSTRAP, FW_LARGE_V2_DIR, FW_MEDIUM_DIR,
+                    HF_ROOT, MODELS_ROOT, NEVISE_DIR, NLTK_DATA, TORCH_HUB)
 
 load_dotenv()
 
@@ -11,9 +12,12 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+import logging
+import subprocess
 # HF_TOKEN = os.getenv("HF_TOKEN")
-import sys, subprocess, logging
+import sys
 from pathlib import Path
+
 from download_utils import _download_with_gdown
 
 # ─── Configure root logger for INFO+ to stdout ────────────────────────────────
@@ -24,15 +28,18 @@ logging.basicConfig(
 )
 
 import ssl
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
 # ─── Prepend Homebrew to PATH ──────────────────────────────────────────────────
 # so that subprocesses can find /opt/homebrew/bin/ffmpeg, etc.
 import os
+
 homebrew_bin = "/opt/homebrew/bin"
 os.environ["PATH"] = f"{homebrew_bin}:{os.environ.get('PATH', '')}"
 import nest_asyncio
+
 nest_asyncio.apply()
 
 
@@ -63,7 +70,15 @@ log = logging.getLogger("init")
 
 
 def _ensure_dirs():
-    for p in [MODELS_ROOT, HF_ROOT, TORCH_HUB, NLTK_DATA, FW_MEDIUM_DIR.parent, BERT_FA_DIR.parent, NEVISE_DIR]:
+    for p in [
+        MODELS_ROOT,
+        HF_ROOT,
+        TORCH_HUB,
+        NLTK_DATA,
+        FW_MEDIUM_DIR.parent,
+        BERT_FA_DIR.parent,
+        NEVISE_DIR,
+    ]:
         p.mkdir(parents=True, exist_ok=True)
 
 
@@ -104,6 +119,7 @@ def _cache_nltk():
         import nltk  # noqa
 
     import nltk
+
     log.info("Caching NLTK punkt …")
     NLTK_DATA.mkdir(parents=True, exist_ok=True)
     nltk.download("punkt", download_dir=str(NLTK_DATA))
@@ -115,10 +131,10 @@ def _cache_nltk():
     log.info("✅ Cached NLTK punkt")
 
 
-
 def ensure_dirs(*paths):
     for p in paths:
         Path(p).mkdir(parents=True, exist_ok=True)
+
 
 def is_silero_cached(torch_cache: Path) -> bool:
     # Look for a cached Torch Hub repo (has hubconf.py) directly under torch_cache
@@ -126,6 +142,7 @@ def is_silero_cached(torch_cache: Path) -> bool:
         if (sub / "hubconf.py").exists() and "silero" in sub.name.lower():
             return True
     return False
+
 
 def cache_silero_vad(torch_hub_dir: Path, force: bool = False) -> None:
     """
@@ -167,6 +184,7 @@ def cache_wav2vec2_base(torch_home: Path, force: bool = False) -> Path:
     Raises RuntimeError if caching fails.
     """
     import os
+
     import torch
     import torchaudio
 
@@ -190,7 +208,9 @@ def cache_wav2vec2_base(torch_home: Path, force: bool = False) -> Path:
             logger.info(f"✅ Cached: {dest}")
             return dest
     except Exception as e:
-        logger.warning(f"Direct download failed ({e}). Falling back to torchaudio pipeline…")
+        logger.warning(
+            f"Direct download failed ({e}). Falling back to torchaudio pipeline…"
+        )
 
     # Fallback: torchaudio pipeline (writes to TORCH_HOME/hub/checkpoints)
     try:
@@ -271,8 +291,6 @@ def bootstrap_offline_assets():
 
     # Note: comment if alignment is not central to the pipeline
     cache_wav2vec2_base(TORCH_HUB, force=False)
-
-
 
     # 4) NLTK punkt
     _cache_nltk()

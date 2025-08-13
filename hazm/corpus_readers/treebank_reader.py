@@ -4,15 +4,10 @@
 
 """
 
-
 import os
 import sys
 from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Any, Dict, Iterator, List, Tuple
 from xml.dom import minidom
 from xml.dom.minidom import Node
 
@@ -99,6 +94,7 @@ class TreebankReader:
             سند بعدی.
 
         """
+
         def remove_blanks(node):
             for x in node.childNodes:
                 if x.nodeType == Node.TEXT_NODE:

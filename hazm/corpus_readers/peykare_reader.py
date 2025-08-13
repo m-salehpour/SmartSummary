@@ -15,14 +15,9 @@
 
 """
 
-
-import codecs
 import os
 from pathlib import Path
-from typing import Any
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Iterator, List, Tuple
 
 from hazm.normalizer import Normalizer
 from hazm.word_tokenizer import WordTokenizer
@@ -167,7 +162,7 @@ def coarse_pos_u(tags: List[str], word: str) -> List[str]:
         return "NOUN"
 
 
-def coarse_pos_e(tags: List[str], word) -> List[str]: # noqa: D417, ARG001
+def coarse_pos_e(tags: List[str], word) -> List[str]:  # noqa: D417, ARG001
     """برچسب‌های ریز را به برچسب‌های درشت (coarse-grained pos tags) تبدیل می‌کند.
 
     Examples:
@@ -286,7 +281,8 @@ class PeykareReader:
                         yield text
 
     def doc_to_sents(
-        self: "PeykareReader", document: str,
+        self: "PeykareReader",
+        document: str,
     ) -> Iterator[List[Tuple[str, str]]]:
         """سند ورودی را به لیستی از جملات تبدیل می‌کند.
 

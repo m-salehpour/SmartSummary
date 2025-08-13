@@ -12,14 +12,9 @@
 
 """
 
-
 import os
 import sys
-from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
-from typing import Tuple
+from typing import Any, Dict, Iterator, Tuple
 from xml.dom import minidom
 
 
@@ -66,8 +61,8 @@ class DegarbayanReader:
 
             return "NotParaphrase"
 
-        filename = os.path.join(self._root, self._corpus_file) # noqa: PTH118
-        if os.path.exists(filename): # noqa: PTH110
+        filename = os.path.join(self._root, self._corpus_file)  # noqa: PTH118
+        if os.path.exists(filename):  # noqa: PTH110
             try:
                 elements = minidom.parse(filename)
                 for element in elements.getElementsByTagName("Pair"):

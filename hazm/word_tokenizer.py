@@ -7,16 +7,12 @@
 
 import re
 from pathlib import Path
-from typing import Dict
 from typing import List
 
 from flashtext import KeywordProcessor
 from nltk.tokenize.api import TokenizerI
 
-from hazm import abbreviations
-from hazm import default_verbs
-from hazm import default_words
-from hazm import words_list
+from hazm import abbreviations, default_verbs, default_words, words_list
 
 
 class WordTokenizer(TokenizerI):
@@ -47,7 +43,7 @@ class WordTokenizer(TokenizerI):
         words_file: str = default_words,
         verbs_file: str = default_verbs,
         join_verb_parts: bool = True,
-        join_abbreviations: bool=False,
+        join_abbreviations: bool = False,
         separate_emoji: bool = False,
         replace_links: bool = False,
         replace_ids: bool = False,
@@ -245,14 +241,12 @@ class WordTokenizer(TokenizerI):
                     + ["ن" + bon + "ه" for bon in self.bons],
                 )
 
-        if (join_abbreviations):
+        if join_abbreviations:
             abbreviations_file = Path(abbreviations)
 
             with abbreviations_file.open("r", encoding="utf-8") as f:
                 abbrs = [line.strip() for line in f]
                 self.abbreviations = abbrs
-
-
 
     def tokenize(self: "WordTokenizer", text: str) -> List[str]:
         """توکن‌های متن را استخراج می‌کند.
@@ -289,21 +283,21 @@ class WordTokenizer(TokenizerI):
         # >>> print(' '.join(tokenizer.tokenize('📍عرضه بلوک 17 درصدی #های_وب به قیمت')))
         # 📍 عرضه بلوک NUM2 درصدی TAG های وب به قیمت
 
-
         if self._join_abbreviation:
-
-            rnd = 313 # random number that is less likely to appear within the text
+            rnd = 313  # random number that is less likely to appear within the text
 
             while str(rnd) in text:
-                rnd=rnd+1 # if rnd is found within the text, increment it by 1 until it no longer appears in the text.
+                rnd = (
+                    rnd + 1
+                )  # if rnd is found within the text, increment it by 1 until it no longer appears in the text.
 
-            rnd = str (rnd)
+            rnd = str(rnd)
 
             keyword_processor = KeywordProcessor()
-            text = text.replace(" "," " * 3)
+            text = text.replace(" ", " " * 3)
 
-            for (i, abbr) in enumerate(self.abbreviations):
-                keyword_processor.add_keyword(" "+abbr+" ", rnd+str(i))
+            for i, abbr in enumerate(self.abbreviations):
+                keyword_processor.add_keyword(" " + abbr + " ", rnd + str(i))
 
             text = keyword_processor.replace_keywords(text)
 
@@ -328,15 +322,15 @@ class WordTokenizer(TokenizerI):
         tokens = self.join_verb_parts(tokens) if self._join_verb_parts else tokens
 
         if self._join_abbreviation:
-            reversed_dict = {value: key for key, value in keyword_processor.get_all_keywords().items()}
+            reversed_dict = {
+                value: key
+                for key, value in keyword_processor.get_all_keywords().items()
+            }
             for i, token in enumerate(tokens):
                 if token in reversed_dict:
                     tokens[i] = reversed_dict[token].strip()
 
         return tokens
-
-
-
 
     def join_verb_parts(self: "WordTokenizer", tokens: List[str]) -> List[str]:
         """افعال چندبخشی را به هم می‌چسباند.
@@ -373,8 +367,3 @@ class WordTokenizer(TokenizerI):
             else:
                 result.append(token)
         return list(reversed(result[1:]))
-
-
-
-
-

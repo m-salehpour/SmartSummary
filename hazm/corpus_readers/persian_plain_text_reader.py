@@ -1,18 +1,14 @@
 """این ماژول، پیکره‌های متنی خام را می‌خواند."""
-from typing import Any
-from typing import Callable
-from typing import List
+
+from typing import Callable, List
 
 from nltk.corpus import PlaintextCorpusReader
-from nltk.corpus.reader import StreamBackedCorpusView
-from nltk.corpus.reader import read_blankline_block
+from nltk.corpus.reader import StreamBackedCorpusView, read_blankline_block
 
-from hazm import SentenceTokenizer
-from hazm import WordTokenizer
+from hazm import SentenceTokenizer, WordTokenizer
 
 
 class PersianPlainTextReader(PlaintextCorpusReader):
-
     CorpusView = StreamBackedCorpusView
 
     def __init__(

@@ -1,13 +1,10 @@
 """این ماژول شامل کلاس‌ها و توابعی برای خواندن پیکرهٔ تی‌نیوز است."""
 
-
 import os
 import re
 import sys
 from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
+from typing import Dict, Iterator
 from xml.dom import minidom
 
 
