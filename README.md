@@ -48,7 +48,7 @@ python -m init
 #   ollama serve
 
 # 4) Run a transcription experiment (now works offline)
-python -m tools.transcribe_x2 \
+python -m src.transcribe_x2 \
   --audio "../Data/Training/English/Churchill/english_firstsourcecommons_13_churchill_64kb.mp3" \
   --ref   "../Data/Training/English/Churchill/english_firstsourcecommons_13_churchill_transcript-english_translation_hebrew.docx"
 ```
@@ -127,7 +127,7 @@ export TORCH_HOME="$PWD/models/torch_home"
 export TORCH_HUB="$PWD/models/torch_hub"
 
 # Run
-python -m tools.transcribe_x2 --audio <path> --ref <path>
+python -m src.transcribe_x2 --audio <path> --ref <path>
 ```
 
 The code points faster‑whisper to the **local** copy via `download_root=…` and sets all “\*\_OFFLINE” flags so no network calls are made.

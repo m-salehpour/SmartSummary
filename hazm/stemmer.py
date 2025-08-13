@@ -10,7 +10,6 @@
 
 """
 
-
 from nltk.stem.api import StemmerI
 
 
@@ -61,7 +60,7 @@ class Stemmer(StemmerI):
         """
         for end in self.ends:
             if word.endswith(end):
-                word = word[:-len(end)]
+                word = word[: -len(end)]
 
         if word.endswith("ۀ"):
             word = word[:-1] + "ه"

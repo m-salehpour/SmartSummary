@@ -11,10 +11,7 @@
 
 import re
 from pathlib import Path
-from typing import Iterator
-from typing import List
-from typing import Optional
-from typing import Tuple
+from typing import Iterator, List, Optional, Tuple
 
 from hazm import Normalizer
 

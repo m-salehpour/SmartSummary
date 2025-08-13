@@ -4,14 +4,10 @@
 
 """
 
-
 import itertools
 import os
 import sys
-from pathlib import Path
-from typing import Any
-from typing import Dict
-from typing import Iterator
+from typing import Any, Dict, Iterator
 from xml.dom import minidom
 
 
@@ -63,7 +59,9 @@ class SentiPersReader:
         for root, _dirs, files in os.walk(self._root):
             for filename in sorted(files):
                 try:
-                    elements = minidom.parse(os.path.join(root, filename)) # noqa: PTH118
+                    elements = minidom.parse(
+                        os.path.join(root, filename)
+                    )  # noqa: PTH118
 
                     product = elements.getElementsByTagName("Product")[0]
                     doc = {

@@ -4,11 +4,9 @@
 ریخت‌شناسی تک‌تک کلمات قرآن کریم است.
 
 """
+
 from pathlib import Path
-from typing import Dict
-from typing import Iterator
-from typing import List
-from typing import Tuple
+from typing import Dict, Iterator, List, Tuple
 
 from hazm.utils import maketrans
 
@@ -54,7 +52,7 @@ class QuranReader:
             parts = line.strip().split("\t")
 
             part = {
-                "loc": eval(parts[0].replace(":", ",")), # noqa: PGH001
+                "loc": eval(parts[0].replace(":", ",")),  # noqa: PGH001
                 "text": parts[1].translate(buckwalter_transliteration),
                 "tag": parts[2],
             }

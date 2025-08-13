@@ -1,16 +1,17 @@
 """این ماژول شامل کلاس‌ها و توابعی برای برچسب‌گذاری توکن‌هاست."""
-import spacy
-from nltk.tag import stanford  # noqa: I001
-from sklearn.metrics import classification_report, precision_score, recall_score, f1_score
-from spacy import Vocab
-from spacy.tokens import DocBin, Doc
-from tqdm import tqdm
-
-from hazm import SequenceTagger
 
 import os
 import subprocess
 
+import spacy
+from nltk.tag import stanford  # noqa: I001
+from sklearn.metrics import (classification_report, f1_score, precision_score,
+                             recall_score)
+from spacy import Vocab
+from spacy.tokens import Doc, DocBin
+from tqdm import tqdm
+
+from hazm import SequenceTagger
 
 punctuation_list = [
     '"',
@@ -38,7 +39,10 @@ class POSTagger(SequenceTagger):
     """این کلاس‌ها شامل توابعی برای برچسب‌گذاری توکن‌هاست."""
 
     def __init__(
-        self: "POSTagger", model=None, data_maker=None, universal_tag=False,
+        self: "POSTagger",
+        model=None,
+        data_maker=None,
+        universal_tag=False,
     ) -> None:
         data_maker = self.data_maker if data_maker is None else data_maker
         self.__is_universal = universal_tag
@@ -172,8 +176,8 @@ class StanfordPOSTagger(stanford.StanfordPOSTagger):
         self: "StanfordPOSTagger",
         model_filename: "str",
         path_to_jar: str,
-        *args, # noqa: ANN002
-        **kwargs, # noqa: ANN003
+        *args,  # noqa: ANN002
+        **kwargs,  # noqa: ANN003
     ) -> None:
         self._SEPARATOR = "/"
         super(stanford.StanfordPOSTagger, self).__init__(
@@ -201,22 +205,7 @@ class StanfordPOSTagger(stanford.StanfordPOSTagger):
 
 
 class SpacyPOSTagger(POSTagger):
-    def __init__(
-        self: "SpacyPOSTagger",
-        model_path=None,
-        using_gpu=False,
-        gpu_id=0
-    ):
-        
-        import spacy  # noqa: I001
-
-        from spacy.tokens import Doc
-        from spacy.tokens import DocBin
-        from spacy.vocab import Vocab
-
-        from sklearn.metrics import classification_report,f1_score,accuracy_score,precision_score,recall_score
-
-        from tqdm import tqdm
+    def __init__(self: "SpacyPOSTagger", model_path=None, using_gpu=False, gpu_id=0):
         """
         Initialize the SpacyPOSTagger with a model and data paths.
 
@@ -228,7 +217,7 @@ class SpacyPOSTagger(POSTagger):
         This constructor calls the constructor of the parent class POSTagger.
         """
         super().__init__(universal_tag=True)
-        self.model_path = model_path #### Usually an output directory for spacy model contain two other directory name model-last , model-best,You should give model_path like this : output/model-last
+        self.model_path = model_path  #### Usually an output directory for spacy model contain two other directory name model-last , model-best,You should give model_path like this : output/model-last
         self.using_gpu = using_gpu
         self.gpu_id = gpu_id
         self.tagger = None
@@ -241,16 +230,15 @@ class SpacyPOSTagger(POSTagger):
         This function initializes and configures the spaCy model, checks for GPU availability, and prepares the training and testing datasets in spaCy format.
 
         If using GPU, GPU settings are configured to enhance processing speed. Then, the pre-trained spaCy model is loaded based on the provided model path.
-        
+
         Training and testing datasets are prepared and saved in the respective directories for use during model training and evaluation.
         """  # noqa: D212
         if self.using_gpu:
             self._setup_gpu()
         else:
             print("------------- You Prefer to use CPU --------------")
-        
 
-    def _setup_model(self: "SpacyPOSTagger",sents):
+    def _setup_model(self: "SpacyPOSTagger", sents):
         """
         Initialize and configure the spaCy model for tagging without GPU settings.
 
@@ -264,7 +252,9 @@ class SpacyPOSTagger(POSTagger):
         self.peykare_dict = {}  # Initialize a dictionary for reference
         self.tagger = spacy.load(self.model_path)  # Load the spaCy model
         self._set_peykare_dictionary(sents)  # Construct a reference dictionary
-        self.tagger.tokenizer = self._custom_tokenizer  # Set a custom tokenizer for the model.
+        self.tagger.tokenizer = (
+            self._custom_tokenizer
+        )  # Set a custom tokenizer for the model.
 
     def _setup_gpu(self: "SpacyPOSTagger"):
         """
@@ -275,7 +265,9 @@ class SpacyPOSTagger(POSTagger):
         This check is performed during setup to make use of available GPU resources for enhanced performance.
         """
         print("------------------ GPU Setup Process Started ---------------------")
-        gpu_available = spacy.prefer_gpu(gpu_id=self.gpu_id)  # Check if a GPU is available
+        gpu_available = spacy.prefer_gpu(
+            gpu_id=self.gpu_id
+        )  # Check if a GPU is available
         if gpu_available:
             print("------------ GPU is available and ready for use -------------")
             spacy.require_gpu(gpu_id=self.gpu_id)  # Configure spaCy to use the GPU
@@ -284,14 +276,15 @@ class SpacyPOSTagger(POSTagger):
             print("------------ GPU is not available; spaCy will use CPU -------------")
             self.gpu_availability = False
 
-
-    def _setup_dataset(self: "SpacyPOSTagger", dataset,saved_directory,data_type='train'):
+    def _setup_dataset(
+        self: "SpacyPOSTagger", dataset, saved_directory, data_type="train"
+    ):
         """
         Setup the training dataset in spaCy's binary format.
 
         This function prepares the training dataset and saves it in spaCy's binary format.
         """
-        assert data_type in ['train','test']
+        assert data_type in ["train", "test"]
         db = DocBin()
         for sent in tqdm(dataset):
             words = [word[0] for word in sent]
@@ -302,9 +295,9 @@ class SpacyPOSTagger(POSTagger):
             db.add(doc)
 
         self._handle_data_path(saved_directory)
-        db.to_disk(f'{saved_directory}/{data_type}.spacy')
+        db.to_disk(f"{saved_directory}/{data_type}.spacy")
 
-    def _handle_data_path(self,path='POSTaggerDataset'):
+    def _handle_data_path(self, path="POSTaggerDataset"):
         """
         Create the directory if it doesn't exist.
 
@@ -317,7 +310,6 @@ class SpacyPOSTagger(POSTagger):
         """
         if not os.path.exists(path):
             os.makedirs(path)
-
 
     def _custom_tokenizer(self: "SpacyPOSTagger", text):
         """
@@ -335,7 +327,7 @@ class SpacyPOSTagger(POSTagger):
         if text in self.peykare_dict:
             return Doc(self.tagger.vocab, self.peykare_dict[text])
         else:
-            raise ValueError('No tokenization available for input.')
+            raise ValueError("No tokenization available for input.")
 
     def _set_peykare_dictionary(self: "SpacyPOSTagger", sents):
         """
@@ -348,20 +340,20 @@ class SpacyPOSTagger(POSTagger):
 
         This method is called during setup to establish a dictionary for tokenization.
         """
-        self.peykare_dict = {' '.join([w for w in item]): [w for w in item] for item in sents}
-
+        self.peykare_dict = {
+            " ".join([w for w in item]): [w for w in item] for item in sents
+        }
 
     def _add_to_dict(self: "SpacyPOSTagger", sents):
         """
-            Add the sentences to dictianory if it doesnt exist already
+        Add the sentences to dictianory if it doesnt exist already
         """
         for sent in sents:
-            key = ' '.join(sent)
+            key = " ".join(sent)
             if key not in self.peykare_dict:
                 self.peykare_dict[key] = sent
 
-
-    def tag(self: "SpacyPOSTagger", tokens,universal_tag=True):
+    def tag(self: "SpacyPOSTagger", tokens, universal_tag=True):
         """یک جمله را در قالب لیستی از توکن‌ها دریافت می‌کند و در خروجی لیستی از
         `(توکن، برچسب)`ها برمی‌گرداند.
 
@@ -385,19 +377,20 @@ class SpacyPOSTagger(POSTagger):
             self._setup_model([tokens])
         self._add_to_dict([tokens])
 
-        doc = self.tagger([' '.join([tok for tok in tokens])])
+        doc = self.tagger([" ".join([tok for tok in tokens])])
         if not universal_tag:
             tags = [tok.tag_ for tok in doc]
         else:
-            tags = [tok.tag_.replace(',EZ','') for tok in doc]
+            tags = [tok.tag_.replace(",EZ", "") for tok in doc]
 
-        return list(zip(tokens,tags))
-              # noqa: W293
-    def tag_sents(self:"SpacyPOSTagger",sents,universal_tag=True,batch_size=128):
+        return list(zip(tokens, tags))
+        # noqa: W293
+
+    def tag_sents(self: "SpacyPOSTagger", sents, universal_tag=True, batch_size=128):
         """
-            Args:
-                sents : List[List[Tokens]]
-                batch_size : number of batches give to model for processing sentences each time
+        Args:
+            sents : List[List[Tokens]]
+            batch_size : number of batches give to model for processing sentences each time
         """
         """
             Returns : List[List[Tuple(str,str)]]
@@ -406,14 +399,18 @@ class SpacyPOSTagger(POSTagger):
             self._setup_model(sents)
 
         self._add_to_dict(sents)
-        
-        docs = list(self.tagger.pipe((' '.join([w for w in sent]) for sent in sents), batch_size=batch_size))
+
+        docs = list(
+            self.tagger.pipe(
+                (" ".join([w for w in sent]) for sent in sents), batch_size=batch_size
+            )
+        )
         if not universal_tag:
             tags = [[w.tag_ for w in doc] for doc in docs]
         else:
-            tags = [[w.tag_.replace(',EZ','') for w in doc] for doc in docs]
-        
-        combined_out = [list(zip(tok,tag)) for tok,tag in zip(sents,tags)]
+            tags = [[w.tag_.replace(",EZ", "") for w in doc] for doc in docs]
+
+        combined_out = [list(zip(tok, tag)) for tok, tag in zip(sents, tags)]
         return combined_out
 
     def train(
@@ -424,7 +421,7 @@ class SpacyPOSTagger(POSTagger):
         base_config_file,
         train_config_path,
         output_dir,
-        use_direct_config=False
+        use_direct_config=False,
     ):
         """
         Train the spaCy model using a subprocess and a configuration file.
@@ -446,20 +443,28 @@ class SpacyPOSTagger(POSTagger):
         """
 
         self.spacy_train_directory = data_directory
-        self.train_dataset = train_dataset ### List[List[Tuple]]
+        self.train_dataset = train_dataset  ### List[List[Tuple]]
         self.test_dataset = test_dataset
         if self.train_dataset:
             # Set up the training dataset configuration
-            self._setup_dataset(dataset=self.train_dataset, saved_directory=self.spacy_train_directory, data_type='train')
+            self._setup_dataset(
+                dataset=self.train_dataset,
+                saved_directory=self.spacy_train_directory,
+                data_type="train",
+            )
 
         if self.test_dataset:
-            self._setup_dataset(test_dataset,saved_directory=data_directory,data_type='test')
+            self._setup_dataset(
+                test_dataset, saved_directory=data_directory, data_type="test"
+            )
 
-        train_data = f'{data_directory}/train.spacy'
-        test_data = f'{data_directory}/test.spacy'
+        train_data = f"{data_directory}/train.spacy"
+        test_data = f"{data_directory}/test.spacy"
 
         if use_direct_config == False:
-            self._setup_train_config(base_config_file, train_config_path=train_config_path)
+            self._setup_train_config(
+                base_config_file, train_config_path=train_config_path
+            )
         else:
             self.train_config_file = train_config_path
 
@@ -469,7 +474,7 @@ class SpacyPOSTagger(POSTagger):
 
         subprocess.run(command, shell=True)
         self.model_path = f"{output_dir}/model-last"
-        self._setup_model([[w for w,_ in sent] for sent in test_dataset])
+        self._setup_model([[w for w, _ in sent] for sent in test_dataset])
 
     def _setup_train_config(self: "SpacyPOSTagger", base_config, train_config_path):
         """
@@ -484,13 +489,19 @@ class SpacyPOSTagger(POSTagger):
         This method is called to generate the training configuration file used in the training process.
         """
         self.train_config_file = train_config_path
-        print("----------------- Setting up the training configuration file ----------------------")
+        print(
+            "----------------- Setting up the training configuration file ----------------------"
+        )
         command = f"python -m spacy init fill-config {base_config} {train_config_path}"  # Generate the training configuration file
         subprocess.run(command, shell=True)
-        print("----------------- Training configuration file created successfully ----------------------")
-        print(f"----------------- Training Config file address is {train_config_path} --------------------")
+        print(
+            "----------------- Training configuration file created successfully ----------------------"
+        )
+        print(
+            f"----------------- Training Config file address is {train_config_path} --------------------"
+        )
 
-    def evaluate(self: "SpacyPOSTagger", test_sents,batch_size):
+    def evaluate(self: "SpacyPOSTagger", test_sents, batch_size):
         """
         Evaluate the spaCy model on input sentences using different tag options.
 
@@ -503,17 +514,27 @@ class SpacyPOSTagger(POSTagger):
 
         This method is typically used for model evaluation and reporting metrics.
         """
-        self._setup_model([[w for w,_ in sent] for sent in test_sents])
+        self._setup_model([[w for w, _ in sent] for sent in test_sents])
         if self.tagger:
-            golds, predictions = self._get_labels_and_predictions(test_sents,batch_size)        
+            golds, predictions = self._get_labels_and_predictions(
+                test_sents, batch_size
+            )
             print("-----------------------------------------")
-            self._evaluate_tags(test_sents, golds, predictions, use_ez_tags=True,batch_size=batch_size)
+            self._evaluate_tags(
+                test_sents, golds, predictions, use_ez_tags=True, batch_size=batch_size
+            )
             print("-----------------------------------------")
-            self._evaluate_tags(test_sents, golds, predictions, use_ez_tags=False,batch_size=batch_size)
+            self._evaluate_tags(
+                test_sents, golds, predictions, use_ez_tags=False, batch_size=batch_size
+            )
         else:
-            raise ValueError("Model does not exist.Please train a new one with train method of this instance or give a model_path , setup the model with self._setup_model() and then call evaluate")
+            raise ValueError(
+                "Model does not exist.Please train a new one with train method of this instance or give a model_path , setup the model with self._setup_model() and then call evaluate"
+            )
 
-    def _evaluate_tags(self, sents, golds=None, predictions=None, use_ez_tags=True,batch_size=128):
+    def _evaluate_tags(
+        self, sents, golds=None, predictions=None, use_ez_tags=True, batch_size=128
+    ):
         """
         Evaluate model predictions and report classification metrics.
 
@@ -533,7 +554,7 @@ class SpacyPOSTagger(POSTagger):
         This method is called by the `evaluate` method to perform model evaluation.
         """
         if golds is None or predictions is None:
-            golds, predictions = self._get_labels_and_predictions(sents,batch_size)
+            golds, predictions = self._get_labels_and_predictions(sents, batch_size)
 
         predictions_cleaned = []
         golds_cleaned = []
@@ -549,11 +570,20 @@ class SpacyPOSTagger(POSTagger):
             for gold in golds:
                 gold_cleaned = get_tag_func(gold)
                 golds_cleaned.append(gold_cleaned)
-        
+
         print(classification_report(golds_cleaned, predictions_cleaned))
-        print('Precision: %.5f' % precision_score(golds_cleaned, predictions_cleaned, average='weighted'))
-        print('Recall: %.5f' % recall_score(golds_cleaned, predictions_cleaned, average='weighted'))
-        print('F1-Score: %.5f' % f1_score(golds_cleaned, predictions_cleaned, average='macro'))
+        print(
+            "Precision: %.5f"
+            % precision_score(golds_cleaned, predictions_cleaned, average="weighted")
+        )
+        print(
+            "Recall: %.5f"
+            % recall_score(golds_cleaned, predictions_cleaned, average="weighted")
+        )
+        print(
+            "F1-Score: %.5f"
+            % f1_score(golds_cleaned, predictions_cleaned, average="macro")
+        )
 
     def _get_ez_tags(self, label):
         """
@@ -567,10 +597,10 @@ class SpacyPOSTagger(POSTagger):
         Returns:
             The 'EZ' tags or '-' if 'EZ' tags are not present.
         """
-        if 'EZ' in label:
-            label = 'EZ'
+        if "EZ" in label:
+            label = "EZ"
         else:
-            label = '-'
+            label = "-"
 
         return label
 
@@ -586,7 +616,7 @@ class SpacyPOSTagger(POSTagger):
         Returns:
             The label with 'EZ' tags removed.
         """
-        return label.replace(',EZ', '') if 'EZ' in label else label
+        return label.replace(",EZ", "") if "EZ" in label else label
 
     def _evaluate_ez_tags(self, sents):
         """
@@ -604,7 +634,7 @@ class SpacyPOSTagger(POSTagger):
         """
         self._evaluate_tags(sents, use_ez_tags=False)
 
-    def _get_labels_and_predictions(self: "SpacyPOSTagger", sents,batch_size):
+    def _get_labels_and_predictions(self: "SpacyPOSTagger", sents, batch_size):
         """
         Extract gold labels and model predictions for evaluation.
 
@@ -619,6 +649,6 @@ class SpacyPOSTagger(POSTagger):
         This method is typically used for gathering data to perform model evaluation.
         """
         gold_labels = [[tag for _, tag in sent] for sent in sents]
-        tokens = [[w for w,_ in sent] for sent in sents]
-        prediction_labels = self.tag_sents(tokens,batch_size)
+        tokens = [[w for w, _ in sent] for sent in sents]
+        prediction_labels = self.tag_sents(tokens, batch_size)
         return gold_labels, prediction_labels

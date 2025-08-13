@@ -1,12 +1,8 @@
 import subprocess
-from typing import Tuple , List
-from tqdm import tqdm
-
 
 
 class HazmNER:
-    from spacy.tokens import Doc
-    from spacy.tokens import DocBin
+    from spacy.tokens import Doc, DocBin
     from spacy.vocab import Vocab
 
     def __init__(self, model_path, use_gpu=False):
@@ -20,7 +16,7 @@ class HazmNER:
         self.model_path = model_path
         self.use_gpu = use_gpu
         self.model = self._load_model(model_path, use_gpu)
-        
+
     def predict_entities(self, sentences):
         """
         Predict named entities in a list of sentences.
@@ -36,7 +32,7 @@ class HazmNER:
             entities = self.predict_entity(sentence)
             names.append(entities)
         return names
-    
+
     def predict_entity(self, sentence):
         """
         Predict named entities in a single sentence.
@@ -59,7 +55,7 @@ class HazmNER:
             dataset_path (str): Path to the evaluation dataset.
         """
         subprocess.run(f"python -m spacy evaluate {self.model_path} {dataset_path}")
-    
+
     def _load_model(self, model_path, use_gpu):
         """
         Load the trained NER model.
@@ -72,6 +68,7 @@ class HazmNER:
             spacy.Language: Loaded NER model.
         """
         import spacy
+
         if use_gpu:
             spacy.require_gpu()
         return spacy.load(model_path)
