@@ -40,7 +40,7 @@ async def translate_asr_json_to_docx(
     *,
     # Expect your async streaming translator to be available in scope:
     # async def translate_he_or_fa_to_en_streaming(text: str, source_lang: Optional[str] = None) -> AsyncIterator[str]
-    translator=None,
+    translator = None,
 ) -> Path:
     """
     Load ASR JSON → stream-translate (HE/FA→EN) → save a single-paragraph .docx.

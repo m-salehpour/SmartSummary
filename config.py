@@ -63,7 +63,7 @@ YOUTUBE_URLS = [
 # # 🔄 Load your previously saved segments.json
 # input_file_name = "response_1730994879150_output-farsi.mp3_16k_no_llm_cleaned_llm_from_no_llm.json"
 # input_file_path = "/Users/pouya/PycharmProjects/SmartSummary/src/transcripts_json"
-# input = input_file_path +"/"+ input_file_name
+# input = os.path.join(input_file_path, input_file_name)
 # with open(input, "r", encoding="utf-8") as f:
 #     segments = json.load(f)
 #
